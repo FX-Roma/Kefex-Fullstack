@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEFEX | Favoritos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Parte de arriba de favoritos -->
+    <header class="header-home-page">
+        <div class="container-home-page">
+            <div class="btn-menu-home-page">
+                <button id="toggle-sidebar-btn" class="btn-hamburger" type="button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <a href="../Home.html" class="logo-home-page">
+                    <h1 class="brand-logo">KEF<span>EX</span></h1>
+                </a>
+            </div>
+
+            <!-- Buscador de arriba -->
+            <form class="search-home-page" id="global-search-form">
+                <div class="search-home-page-container">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input id="search-products-btn" class="search-home-page-btn" type="text" placeholder="Buscar en favoritos">
+                </div>
+            </form>
+
+            <!-- Botones de la derecha -->
+            <div class="right-menu-home-page">
+                <button class="icon-nav-btn" type="button" title="Notificaciones">
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+
+                <a class="icon-nav-btn active-icon" href="favoritos.html" title="Favoritos">
+                    <i class="fa-solid fa-heart"></i>
+                </a>
+
+                <a class="icon-nav-btn" href="../KEFEX Rama Andrés - profile/profile.html" title="Perfil">
+                    <i class="fa-solid fa-circle-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Fondo cuando se abre el menu -->
+    <div class="capa-home-page" id="sidebar-overlay"></div>
+
+    <!-- Menu del lado -->
+    <aside class="cont-menu-home-page" id="sidebar-drawer">
+        <button class="btn-close-sidebar" id="close-sidebar-btn" type="button">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <nav class="lateral-nav-home-page">
+            <div class="lateral-menu-top-container">
+                <div class="lateral-menu-tittle">
+                    <h2>Menú Principal</h2>
+                </div>
+
+                <div class="lateral-menu-options">
+                    <a href="../Home.html"><i class="fa-solid fa-house"></i> Inicio</a>
+                    <a href="../KEFEX Rama Andrés -explorar/Explorar.html"><i class="fa-solid fa-compass"></i> Explorar</a>
+                    <a href="../KEFEX Rama Kevin/apt.html"><i class="fa-solid fa-bullseye"></i> Sección de interés</a>
+                    <a href="../KEFEX Rama Kevin/tiienda.html"><i class="fa-solid fa-store"></i> Tienda</a>
+                    <a href="favoritos.html" class="active"><i class="fa-solid fa-heart"></i> Favoritos</a>
+                    <a href="../KEFEX Rama Kevin/carrito.html"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+                    <a href="../foro.html"><i class="fa-solid fa-gamepad"></i> Foro</a>
+                    <hr>
+                    <a href="../KEFEX Rama Andrés - profile/profile.html"><i class="fa-solid fa-user"></i> Perfil</a>
+                    <a href="../KEFEX Rama Andrés - designers/designers.html"><i class="fa-solid fa-code"></i> Developers</a>
+                </div>
+            </div>
+
+            <!-- Parte de developers -->
+            <div class="developers-container-home-page">
+                <h2>DEVELOPERS</h2>
+
+                <div class="developer-card">
+                    <span>E-commerce</span>
+                    <strong>KEVIN URREGO</strong>
+                </div>
+
+                <div class="developer-card">
+                    <span>Social Experience</span>
+                    <strong>ANDRÉS CORTÉS</strong>
+                </div>
+
+                <div class="developer-card">
+                    <span>Core Experience & AI</span>
+                    <strong>EXLEYDER GALLEGO</strong>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Todo favoritos -->
+    <main class="board-main">
+
+        <!-- Parte principal de favoritos -->
+        <section class="board-header">
+            <div>
+                <span class="section-kicker">TU COLECCIÓN</span>
+                <h1>Favoritos</h1>
+                <p>Aquí puedes encontrar las publicaciones que has guardado para volver a ver después.</p>
+            </div>
+
+            <div class="board-counter">
+                <strong id="saved-count">0</strong>
+                <span>Favoritos</span>
+            </div>
+        </section>
+
+        <!-- Buscador de favoritos -->
+        <section class="board-search-section">
+            <div class="board-search-container">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="board-search" type="text" placeholder="Buscar dentro de tus favoritos">
+            </div>
+        </section>
+
+        <!-- Publicaciones favoritas -->
+        <section class="board-content">
+            <div class="board-content-heading">
+                <div>
+                    <span>Contenido guardado</span>
+                    <h2>Mis favoritos</h2>
+                </div>
+                <span id="results-count" class="results-count">0 publicaciones</span>
+            </div>
+
+            <!-- Aqui JS pone los videos que guardamos -->
+            <div class="board-grid" id="board-grid"></div>
+
+            <!-- Cuando no tenemos favoritos -->
+            <div class="empty-board" id="empty-board">
+                <i class="fa-regular fa-heart"></i>
+                <h3>Todavía no tienes favoritos</h3>
+                <p>Ve a Explorar y guarda las publicaciones que quieras volver a ver después.</p>
+                <a href="../KEFEX Rama Andrés -explorar/Explorar.html">Ir a Explorar</a>
+            </div>
+
+            <!-- Cuando buscamos algo que no esta -->
+            <div class="empty-board" id="empty-search" hidden>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <h3>No encontramos resultados</h3>
+                <p>Prueba buscando otra palabra.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

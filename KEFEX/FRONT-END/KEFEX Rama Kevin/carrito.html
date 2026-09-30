@@ -1,0 +1,400 @@
+<html lang="es"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEFEX - Ecosistema Inteligente</title>
+    <!-- CSS Principal          by:Exleyder-->
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="100h.css">
+
+    <!-- Font Awesome 6.6.0 CDN          by:Exleyder-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+
+    <!-- HEADER / NAVBAR GLOBAL          by:Exleyder-->
+    <header class="header-home-page">
+        <div class="container-home-page">
+            
+            <!-- Botón  & Brand Logo          by:Exleyder-->
+            <div class="btn-menu-home-page">
+                <button id="toggle-sidebar-btn" class="btn-hamburger" aria-label="Abrir menú">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="logo-home-page">
+                    <h1 class="brand-logo">KEF<span>EX</span></h1>
+                </div>
+            </div>
+            
+            <!-- Buscador Inteligente          by:Exleyder-->
+            <nav class="menu-home-page">
+                <form class="search-home-page" id="global-search-form">
+                    <div class="search-home-page-container">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input name="q" type="text" id="search-products-btn" autocomplete="off" placeholder="¿Qué estás buscando hoy?" class="search-home-page-btn">
+                    </div>
+                </form>
+            </nav>
+
+            <!-- Indicadores & Contadores (Notificaciones, Favoritos, Carrito)          by:Exleyder-->
+            <div class="right-menu-home-page">
+                <button class="icon-nav-btn" title="Notificaciones">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="counter-badge badge-danger">3</span>
+                </button>
+                <button class="icon-nav-btn" title="Favoritos">
+                    <i class="fa-solid fa-heart"></i>
+                    <span class="counter-badge badge-primary">7</span>
+                </button>
+                <button class="icon-nav-btn" title="Carrito">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="counter-badge badge-accent">2</span>
+                </button>
+                <div class="user-avatar" title="Perfil de Usuario">
+                    <i class="fa-solid fa-circle-user"></i>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- OVERLAY          by:Exleyder-->
+    <div class="capa-home-page" id="sidebar-overlay"></div>
+
+    <!-- SIDEBAR LATERAL          by:Exleyder-->
+    <aside class="cont-menu-home-page" id="sidebar-drawer">
+        <button class="btn-close-sidebar" id="close-sidebar-btn" aria-label="Cerrar menú">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <nav class="lateral-nav-home-page">
+            <div class="lateral-menu-top-container">
+                <div class="lateral-menu-tittle">
+                    <h2>Menú Principal</h2>
+                </div>
+                  <div class="lateral-menu-options">
+                    <a href="../Home.html" class="active"><i class="fa-solid fa-house"></i> Inicio</a>
+                    <a href="../KEFEX Rama Andrés -explorar/Explorar.html"><i class="fa-solid fa-compass"></i> Explorar </a>
+                    <a href="tiienda.html"><i class="fa-solid fa-store"></i> Tienda </a>
+                    <a href="../KEFEX Rama Andres - favoritos/favoritos.html"><i class="fa-solid fa-heart"></i> Favoritos</a>
+                    <a href="carrito.html"><i class="fa-solid fa-cart-shopping"></i> Carrito </a>
+                    <a href="../foro.html"><i class="fa-solid fa-gamepad"></i> foro </a>
+                    <a href="../KEFEX Rama Andrés - designers/designers.html"><i class="fa-solid fa-code"></i>Developers</a>
+                    <br>
+                    <hr>
+                    <a href="../KEFEX Rama Andrés - profile/profile.html"><i class="fa-solid fa-user"></i> Perfil</a>
+                    <hr>
+
+                </div>
+            </div>
+
+            <!-- SECCIÓN DESARROLLADORES DEL EQUIPO          by:Exleyder-->
+            <div class="developers-container-home-page">
+                <h2><span>DEVELOPERS</span></h2>
+                <a class="developer-card" href="#">
+                    <span class="role-tag">Scrum Master</span>
+                    <strong>EXLEYDER GALLEGO</strong>
+                </a>
+                <a class="developer-card" href="#">
+                    <span class="role-tag">Desarrollador</span>
+                    <strong>ANDRES CORTEZ</strong>
+                </a>
+                <a class="developer-card" href="#">
+                    <span class="role-tag">Desarrollador</span>
+                    <strong>KEVIN URREGO</strong>
+                </a>
+            </div>
+
+            <!-- BOTONES VISUALES LOG IN / LOG OUT          by:Exleyder-->
+            <div class="auth-buttons-container">
+                <button class="btn-auth btn-login"><i class="fa-solid fa-right-to-bracket"></i> Log In</button>
+                <button class="btn-auth btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- EMPIEZA AQUI -->
+    <section class="carrito">
+
+    <!-- ENCABEZADO -->
+    <div class="carrito-header">
+
+        <div>
+            <span class="carrito-label">KEFEX STORE</span>
+
+            <h1>Mi carrito</h1>
+
+            <p>
+                Revisa los productos que has seleccionado
+                antes de realizar tu compra.
+            </p>
+        </div>
+
+        <div class="carrito-estadistica">
+
+            <strong id="estadistica-productos">0</strong>
+
+            <span>Productos</span>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTENIDO -->
+    <div class="carrito-layout">
+
+
+        <!-- PRODUCTOS -->
+        <div class="carrito-productos">
+
+            <div class="carrito-seccion-titulo">
+
+                <h2>Productos seleccionados</h2>
+
+                <span id="cantidad-productos">0 artículos</span>
+
+            </div>
+
+            <div id="lista-carrito">
+
+            </div>
+
+        </div>
+
+
+        <!-- RESUMEN -->
+        <aside class="resumen-carrito">
+
+            <span class="resumen-label">
+                RESUMEN DE COMPRA
+            </span>
+
+            <h2>Total del pedido</h2>
+
+
+            <div class="resumen-linea">
+
+                <span>Subtotal</span>
+
+                <strong id="subtotal-carrito">$0</strong>
+
+            </div>
+
+
+            <div class="resumen-linea">
+
+                <span>Envío</span>
+
+                <strong class="gratis">
+                    GRATIS
+                </strong>
+
+            </div>
+
+
+
+
+            <div class="resumen-separador"></div>
+
+
+            <div class="resumen-total">
+
+                <span>Total</span>
+
+                <strong id="total-carrito">$0</strong>
+
+            </div>
+
+
+            <button class="btn-comprar">
+                Continuar con la compra →
+            </button>
+
+
+            <div class="seguridad">
+
+                🔒 Compra segura y protegida
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</section>
+    <!-- TERMINA AQUI -->
+
+    <!-- JS Principal          by:Exleyder-->
+    <script src="../app.js"></script>
+
+
+<script>
+
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    const listaCarrito = document.getElementById("lista-carrito");
+    const cantidadProductos = document.getElementById("cantidad-productos");
+    const estadisticaProductos = document.getElementById("estadistica-productos");
+    const subtotalCarrito = document.getElementById("subtotal-carrito");
+    const totalCarrito = document.getElementById("total-carrito");
+
+
+    function convertirPrecio(precio) {
+
+        return Number(
+            precio
+                .replace("$", "")
+                .replace(/\./g, "")
+                .replace(",", ".")
+                .trim()
+        );
+
+    }
+
+
+    function formatoPrecio(numero) {
+
+        return "$" + numero.toLocaleString("es-CO");
+
+    }
+
+
+    function mostrarCarrito() {
+
+        listaCarrito.innerHTML = "";
+
+        let cantidadTotal = 0;
+        let subtotal = 0;
+
+
+        carrito.forEach(function(producto, indice) {
+
+            const precio = convertirPrecio(producto.precio);
+
+            const cantidad = producto.cantidad || 1;
+
+            cantidadTotal += cantidad;
+
+            subtotal += precio * cantidad;
+
+
+            const articulo = document.createElement("article");
+
+            articulo.classList.add("producto-carrito");
+
+
+            articulo.innerHTML = `
+
+                <div class="producto-carrito-imagen">
+
+                    <img
+                        src="${producto.imagen}"
+                        alt="${producto.nombre}"
+                    >
+
+                </div>
+
+
+                <div class="producto-carrito-info">
+
+                    <span class="producto-categoria">
+                        ${producto.categoria || "PRODUCTO"}
+                    </span>
+
+                    <h2>${producto.nombre}</h2>
+
+                    <p>
+                        ${producto.descripcion || "Producto seleccionado desde la tienda."}
+                    </p>
+
+                    <div class="producto-rating">
+                        ${producto.valoracion || "★★★★★"}
+                        <span>${producto.rating || "5.0"}</span>
+                    </div>
+
+                </div>
+
+
+                <div class="producto-carrito-cantidad">
+
+                    <span>Cantidad</span>
+
+                    <div class="cantidad-control">
+
+                        <button onclick="cambiarCantidad(${indice}, -1)">-</button>
+
+                        <strong>${cantidad}</strong>
+
+                        <button onclick="cambiarCantidad(${indice}, 1)">+</button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="producto-carrito-precio">
+
+                    <strong>${formatoPrecio(precio * cantidad)}</strong>
+
+                    <button class="eliminar" onclick="eliminarProducto(${indice})">
+                        Eliminar
+                    </button>
+
+                </div>
+
+            `;
+
+
+            listaCarrito.appendChild(articulo);
+
+        });
+
+
+        cantidadProductos.textContent =
+            cantidadTotal + (cantidadTotal === 1 ? " artículo" : " artículos");
+
+        estadisticaProductos.textContent = cantidadTotal;
+
+        subtotalCarrito.textContent = formatoPrecio(subtotal);
+
+        totalCarrito.textContent = formatoPrecio(subtotal);
+
+    }
+
+
+    function cambiarCantidad(indice, cambio) {
+
+        carrito[indice].cantidad =
+            (carrito[indice].cantidad || 1) + cambio;
+
+
+        if (carrito[indice].cantidad <= 0) {
+
+            carrito.splice(indice, 1);
+
+        }
+
+
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+
+        mostrarCarrito();
+
+    }
+
+
+    function eliminarProducto(indice) {
+
+        carrito.splice(indice, 1);
+
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+
+        mostrarCarrito();
+
+    }
+
+
+    mostrarCarrito();
+
+</script>
+
+</body></html>
