@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { Navbar } from '../../componentes/navbar/navbar';
-import { Boton } from '../../componentes/boton/boton';
+import { Component, signal, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  imports: [Boton],
   selector: 'app-home',
-  styleUrl: './home.css',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './home.html',
+  styleUrl: './home.css'
 })
 export class Home {}
