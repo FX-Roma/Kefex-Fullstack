@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEFEX | Explorar</title>
+    <link rel="stylesheet" href="Styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Parte de arriba del explorar -->
+    <header class="header-home-page">
+        <div class="container-home-page">
+            <div class="btn-menu-home-page">
+                <button id="toggle-sidebar-btn" class="btn-hamburger" type="button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <a href="../Home.html" class="logo-home-page">
+                    <h1 class="brand-logo">KEF<span>EX</span></h1>
+                </a>
+            </div>
+
+            <!-- Buscador de arriba -->
+            <form class="search-home-page" id="global-search-form">
+                <div class="search-home-page-container">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input id="search-products-btn" class="search-home-page-btn" type="text" placeholder="Buscar dentro de Explorar">
+                </div>
+            </form>
+
+            <!-- Botones de la derecha -->
+            <div class="right-menu-home-page">
+                <button class="icon-nav-btn" type="button" title="Notificaciones">
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+                <a class="icon-nav-btn" href="../KEFEX Rama Andres - favoritos/favoritos.html" title="Tablero">
+                    <i class="fa-solid fa-bookmark"></i>
+                </a>
+                <a class="icon-nav-btn" href="../KEFEX Rama Andrés - profile/profile.html" title="Perfil">
+                    <i class="fa-solid fa-circle-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Fondo cuando se abre el menu -->
+    <div class="capa-home-page" id="sidebar-overlay"></div>
+
+    <!-- Menu del lado -->
+    <aside class="cont-menu-home-page" id="sidebar-drawer">
+        <button class="btn-close-sidebar" id="close-sidebar-btn" type="button">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <nav class="lateral-nav-home-page">
+            <div class="lateral-menu-top-container">
+                <div class="lateral-menu-tittle">
+                    <h2>Menú Principal</h2>
+                </div>
+
+                <div class="lateral-menu-options">
+                    <a href="../Home.html"><i class="fa-solid fa-house"></i> Inicio</a>
+                    <a href="Explorar.html" class="active"><i class="fa-solid fa-compass"></i> Explorar</a>
+                    <a href="../KEFEX Rama Kevin/apt.html"><i class="fa-solid fa-bullseye"></i> Sección de interés</a>
+                    <a href="../KEFEX Rama Kevin/tiienda.html"><i class="fa-solid fa-store"></i> Tienda</a>
+                    <a href="../KEFEX Rama Andres - favoritos/favoritos.html"><i class="fa-solid fa-bookmark"></i> Tablero</a>
+                    <a href="../KEFEX Rama Kevin/carrito.html"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+                    <a href="../foro.html"><i class="fa-solid fa-gamepad"></i> Foro</a>
+                    <hr>
+                    <a href="../KEFEX Rama Andrés - profile/profile.html"><i class="fa-solid fa-user"></i> Perfil</a>
+                    <a href="../KEFEX Rama Andrés - designers/designers.html"><i class="fa-solid fa-code"></i> Developers</a>
+                </div>
+            </div>
+
+            <!-- Parte de developers -->
+            <div class="developers-container-home-page">
+                <h2><span>DEVELOPERS</span></h2>
+                <a class="developer-card" href="../KEFEX Rama Andrés - designers/designers.html">
+                    <span>Scrum Master</span>
+                    <strong>EXLEYDER GALLEGO</strong>
+                </a>
+                <a class="developer-card" href="../KEFEX Rama Andrés - designers/designers.html">
+                    <span>Desarrollador</span>
+                    <strong>ANDRÉS CORTÉS</strong>
+                </a>
+                <a class="developer-card" href="../KEFEX Rama Andrés - designers/designers.html">
+                    <span>Desarrollador</span>
+                    <strong>KEVIN URREGO</strong>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Contenido del explorar -->
+    <main class="explore-main">
+
+        <!-- Titulo del explorar -->
+        <section class="explore-header">
+            <div class="header-top">
+                <div>
+                    <span class="section-kicker">KEFEX FEED</span>
+                    <h1>Explorar</h1>
+                </div>
+                <button class="theme-toggle" type="button">Light mode ☀️</button>
+            </div>
+            <p>Descubre contenido según tus intereses, explora diferentes categorías y guarda las publicaciones que quieras consultar después.</p>
+        </section>
+
+        <!-- Buscador del explorar -->
+        <section class="explore-section search-section">
+            <h2>Buscar en KEFEX</h2>
+            <div class="explore-search-container">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="explore-search" class="explore-search" type="text" placeholder="Busca productos, categorías o usuarios">
+            </div>
+        </section>
+
+        <!-- Categorias -->
+        <section class="explore-section">
+            <h2>Explorar por categorías</h2>
+            <div class="category-buttons">
+                <button class="category-button active-category" data-category="para-ti">Para ti 🫵</button>
+                <button class="category-button" data-category="tecnologia">Tecnología 💻</button>
+                <button class="category-button" data-category="moda">Moda 👗</button>
+                <button class="category-button" data-category="gaming">Gaming 🎮</button>
+                <button class="category-button" data-category="hogar">Hogar 🏠</button>
+                <button class="category-button" data-category="salud">Salud 🩺</button>
+                <button class="category-button" data-category="deportes">Deportes ⚽</button>
+                <button class="category-button" data-category="belleza">Belleza 💄</button>
+                <button class="category-button" data-category="educacion">Educación 📚</button>
+                <button class="category-button" data-category="viajes">Viajes ✈️</button>
+            </div>
+        </section>
+
+        <!-- Publicaciones -->
+        <section class="explore-section">
+            <div class="feed-heading">
+                <div>
+                    <span class="feed-label">Mostrando</span>
+                    <h2 class="feed-title">Para ti</h2>
+                </div>
+                <span id="visible-post-count" class="post-count">0 publicaciones</span>
+            </div>
+
+            <div class="posts-container">
+
+                <!-- Publicacion para ti -->
+                <article class="post sponsored" data-category="para-ti" data-post-id="post-para-ti-1">
+                    <span class="sponsored-label">Publicidad paga 💵</span>
+
+                    <div class="author-information">
+                        <img src="Imagen/Kefex-ph.png" alt="Perfil">
+                        <div class="user-info">
+                            <h3>Andrés Cortés</h3>
+                            <p>@Andresitomuchoflow</p>
+                        </div>
+                    </div>
+
+                    <div class="caption">
+                        <p>Descubre KEFEX, una nueva forma de encontrar contenido, productos y recomendaciones según tus gustos.</p>
+                    </div>
+
+                    <!-- Video para ti -->
+                    <div class="post-media">
+                        <video controls preload="metadata">
+                            <source src="Video/video-parati.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div class="e-commerce">
+                        <div>
+                            <span>KEFEX</span>
+                            <h4>Descubre algo nuevo</h4>
+                            <p>Explora contenido y productos de acuerdo con tus intereses.</p>
+                        </div>
+                        <a href="../KEFEX Rama Kevin/tiienda.html">Ver más</a>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="recommend-button" type="button"><i class="fa-regular fa-heart"></i> Recomendar</button>
+                        <button class="comment-button" type="button"><i class="fa-regular fa-comment"></i> Comentar</button>
+                        <button class="save-button" type="button"><i class="fa-regular fa-bookmark"></i> Tablero</button>
+                    </div>
+
+                    <div class="comments-container"></div>
+                </article>
+
+                <!-- Publicacion tecnologia -->
+                <article class="post organic" data-category="tecnologia" data-post-id="post-tecnologia-1" hidden>
+                    <div class="author-information">
+                        <img src="Imagen/K-Kefex.png" alt="Perfil">
+                        <div class="user-info">
+                            <h3>KEFEX Tech</h3>
+                            <p>@kefextech</p>
+                        </div>
+                    </div>
+
+                    <div class="caption">
+                        <p>Ideas, productos y recomendaciones para todos los que aman la tecnología.</p>
+                    </div>
+
+                    <!-- Video tecnologia -->
+                    <div class="post-media">
+                        <video controls preload="metadata">
+                            <source src="Video/video-tecnologia.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div class="e-commerce">
+                        <div>
+                            <span>Tecnología</span>
+                            <h4>Productos tecnológicos</h4>
+                            <p>Encuentra accesorios y dispositivos para tu día a día.</p>
+                        </div>
+                        <a href="../KEFEX Rama Kevin/tiienda.html">Ver más</a>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="recommend-button" type="button"><i class="fa-regular fa-heart"></i> Recomendar</button>
+                        <button class="comment-button" type="button"><i class="fa-regular fa-comment"></i> Comentar</button>
+                        <button class="save-button" type="button"><i class="fa-regular fa-bookmark"></i> Tablero</button>
+                    </div>
+
+                    <div class="comments-container"></div>
+                </article>
+
+                <!-- Publicacion moda -->
+                <article class="post organic" data-category="moda" data-post-id="post-moda-1" hidden>
+                    <div class="author-information">
+                        <img src="Imagen/F-Kefex.png" alt="Perfil">
+                        <div class="user-info">
+                            <h3>KEFEX Fashion</h3>
+                            <p>@kefexfashion</p>
+                        </div>
+                    </div>
+
+                    <div class="caption">
+                        <p>Encuentra nuevas tendencias, prendas y accesorios según tu estilo.</p>
+                    </div>
+
+                    <!-- Video moda -->
+                    <div class="post-media">
+                        <video controls preload="metadata">
+                            <source src="Video/video-moda.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div class="e-commerce">
+                        <div>
+                            <span>Moda</span>
+                            <h4>Encuentra tu estilo</h4>
+                            <p>Explora opciones que se adapten a tus gustos.</p>
+                        </div>
+                        <a href="../KEFEX Rama Kevin/tiienda.html">Ver más</a>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="recommend-button" type="button"><i class="fa-regular fa-heart"></i> Recomendar</button>
+                        <button class="comment-button" type="button"><i class="fa-regular fa-comment"></i> Comentar</button>
+                        <button class="save-button" type="button"><i class="fa-regular fa-bookmark"></i> Tablero</button>
+                    </div>
+
+                    <div class="comments-container"></div>
+                </article>
+
+                <!-- Publicacion gaming -->
+                <article class="post organic" data-category="gaming" data-post-id="post-gaming-1" hidden>
+                    <div class="author-information">
+                        <img src="Imagen/X-Kefex.png" alt="Perfil">
+                        <div class="user-info">
+                            <h3>KEFEX Gaming</h3>
+                            <p>@kefexgaming</p>
+                        </div>
+                    </div>
+
+                    <div class="caption">
+                        <p>Contenido para gamers, setups, periféricos y recomendaciones para mejorar tu experiencia.</p>
+                    </div>
+
+                    <!-- Video gaming -->
+                    <div class="post-media">
+                        <video controls preload="metadata">
+                            <source src="Video/video-gaming.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div class="e-commerce">
+                        <div>
+                            <span>Gaming</span>
+                            <h4>Mejora tu setup</h4>
+                            <p>Descubre productos y contenido para gamers.</p>
+                        </div>
+                        <a href="../KEFEX Rama Kevin/tiienda.html">Ver más</a>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="recommend-button" type="button"><i class="fa-regular fa-heart"></i> Recomendar</button>
+                        <button class="comment-button" type="button"><i class="fa-regular fa-comment"></i> Comentar</button>
+                        <button class="save-button" type="button"><i class="fa-regular fa-bookmark"></i> Tablero</button>
+                    </div>
+
+                    <div class="comments-container"></div>
+                </article>
+
+                <!-- Publicacion hogar -->
+                <article class="post organic" data-category="hogar" data-post-id="post-hogar-1" hidden>
+                    <div class="author-information">
+                        <img src="Imagen/Kefex-ph.png" alt="Perfil">
+                        <div class="user-info">
+                            <h3>KEFEX Home</h3>
+                            <p>@kefexhome</p>
+                        </div>
+                    </div>
+
+                    <div class="caption">
+                        <p>Ideas para hacer de tu casa un espacio más cómodo, bonito y funcional.</p>
+                    </div>
+
+                    <!-- Video hogar -->
+                    <div class="post-media">
+                        <video controls preload="metadata">
+                            <source src="Video/video-hogar.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div class="e-commerce">
+                        <div>
+                            <span>Hogar</span>
+                            <h4>Renueva tus espacios</h4>
+                            <p>Productos, decoración e ideas para tu hogar.</p>
+                        </div>
+                        <a href="../KEFEX Rama Kevin/tiienda.html">Ver más</a>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="recommend-button" type="button"><i class="fa-regular fa-heart"></i> Recomendar</button>
+                        <button class="comment-button" type="button"><i class="fa-regular fa-comment"></i> Comentar</button>
+                        <button class="save-button" type="button"><i class="fa-regular fa-bookmark"></i> Tablero</button>
+                    </div>
+
+                    <div class="comments-container"></div>
+                </article>
+
+            </div>
+
+            <!-- Cuando no encuentra nada -->
+            <div id="no-results-message" class="no-results-message" hidden>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <h3>No encontramos publicaciones</h3>
+                <p>Prueba buscando otra palabra o cambia de categoría.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
