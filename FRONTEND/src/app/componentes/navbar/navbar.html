@@ -1,0 +1,197 @@
+<!-- HEADER GLOBAL / NAVBAR -->
+<header class="header-home-page">
+    <div class="container-home-page">
+        
+        <!-- Botón Hamburguesa & Brand Logo -->
+        <div class="btn-menu-home-page">
+            <button id="toggle-sidebar-btn" class="btn-hamburger" aria-label="Abrir menú" (click)="openSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="logo-container">
+                <h1 class="brand-logo-home-page">
+                    <!-- K - KEVIN URREGO -->
+                    <span 
+                      class="developer-letter developer-k" 
+                      [class.developer-active]="activeDeveloper() === 'K'"
+                      (click)="toggleDeveloper('K', $event)">
+                        K
+                        <div class="developer-popup">
+                            <div class="developer-popup-image">
+                                <h3 class="developer-image-name">Kevin Urrego</h3>
+                                <img src="imagen/K-Kefex.png" alt="Avatar Kevin Urrego">
+                            </div>
+                            <div class="developer-popup-info">
+                                <span class="developer-role">E-COMMERCE DEVELOPER</span>
+                                <p class="developer-description">
+                                    Encargado del componente e-commerce de KEFEX, desarrollando la experiencia comercial y conectando la selección y compra de productos.
+                                </p>
+                                <div class="developer-tools">
+                                    <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                                </div>
+                                <div class="developer-section">
+                                    <h4>Áreas desarrolladas</h4>
+                                    <p><i class="fa-solid fa-store"></i> Tienda</p>
+                                    <p><i class="fa-solid fa-cart-shopping"></i> Carrito</p>
+                                    <p><i class="fa-solid fa-bullseye"></i> Sección de interés</p>
+                                </div>
+                                <div class="developer-contact">
+                                    <h4>Contacto</h4>
+                                    <a href="mailto:kevinurregoves155@gmail.com"><i class="fa-solid fa-envelope"></i> kevinurregoves155@gmail.com</a>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
+
+                    <span class="normal-letter">E</span>
+
+                    <!-- F - ANDRÉS FELIPE CORTÉS -->
+                    <span 
+                      class="developer-letter developer-f" 
+                      [class.developer-active]="activeDeveloper() === 'F'"
+                      (click)="toggleDeveloper('F', $event)">
+                        F
+                        <div class="developer-popup">
+                            <div class="developer-popup-image">
+                                <h3 class="developer-image-name">Andrés Felipe Cortés</h3>
+                                <img src="imagen/F-Kefex.png" alt="Avatar Andrés Felipe Cortés">
+                            </div>
+                            <div class="developer-popup-info">
+                                <span class="developer-role">SOCIAL EXPERIENCE DEVELOPER</span>
+                                <p class="developer-description">
+                                    Encargado del componente de red social de KEFEX, descubriendo contenido e interactuando con publicaciones.
+                                </p>
+                                <div class="developer-tools">
+                                    <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                                </div>
+                                <div class="developer-section">
+                                    <h4>Áreas desarrolladas</h4>
+                                    <p><i class="fa-solid fa-compass"></i> Explorar</p>
+                                    <p><i class="fa-solid fa-bookmark"></i> Favoritos / Tablero</p>
+                                    <p><i class="fa-solid fa-user"></i> Perfil</p>
+                                </div>
+                                <div class="developer-contact">
+                                    <h4>Contacto</h4>
+                                    <a href="https://www.linkedin.com/in/andresfc1248/" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
+
+                    <span class="normal-letter span">E</span>
+
+                    <!-- X - EXLEYDER GALLEGO -->
+                    <span 
+                      class="developer-letter developer-x span" 
+                      [class.developer-active]="activeDeveloper() === 'X'"
+                      (click)="toggleDeveloper('X', $event)">
+                        X
+                        <div class="developer-popup">
+                            <div class="developer-popup-image">
+                                <h3 class="developer-image-name">Exleyder Gallego</h3>
+                                <img src="imagen/X-Kefex.png" alt="Avatar Exleyder Gallego">
+                            </div>
+                            <div class="developer-popup-info">
+                                <span class="developer-role">CORE EXPERIENCE & AI</span>
+                                <p class="developer-description">
+                                    Encargado de la experiencia inicial y de las integraciones principales de KEFEX, desarrollando el Home, Foro y el Chatbox con IA.
+                                </p>
+                                <div class="developer-tools">
+                                    <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                                </div>
+                                <div class="developer-section">
+                                    <h4>Áreas desarrolladas</h4>
+                                    <p><i class="fa-solid fa-house"></i> Inicio / Home</p>
+                                    <p><i class="fa-solid fa-comments"></i> Foro</p>
+                                    <p><i class="fa-solid fa-robot"></i> Chatbox con IA</p>
+                                </div>
+                                <div class="developer-contact">
+                                    <h4>Contacto</h4>
+                                    <a href="https://www.linkedin.com/in/over-orejuela-4207b3320/" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
+                </h1>
+            </div>
+        </div>
+        
+        <!-- Buscador Global -->
+        <nav class="menu-home-page">
+            <form class="search-home-page" (submit)="$event.preventDefault()">
+                <div class="search-home-page-container">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" placeholder="¿Qué estás buscando hoy?" class="search-home-page-btn">
+                </div>
+            </form>
+        </nav>
+
+        <!-- Indicadores & Contadores -->
+        <div class="right-menu-home-page">
+            <button class="icon-nav-btn" title="Notificaciones">
+                <i class="fa-solid fa-bell"></i>
+                <span class="counter-badge badge-danger">3</span>
+            </button>
+            <button class="icon-nav-btn" title="Favoritos">
+                <i class="fa-solid fa-heart"></i>
+                <span class="counter-badge badge-primary">7</span>
+            </button>
+            <button class="icon-nav-btn" title="Carrito">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="counter-badge badge-accent">{{ cartCount() }}</span>
+            </button>
+            <div class="user-avatar" title="Perfil de Usuario">
+                <i class="fa-solid fa-circle-user"></i>
+                <div class="transparent-user-popup">
+                    <div class="user-menu">
+                        <div class="user-menu-option">Guardados</div>
+                        <div class="user-menu-option">Favoritos</div>
+                        <div class="user-menu-option">Carrito</div>
+                        <div class="user-menu-option">Notificaciones</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<!-- OVERLAY Y SIDEBAR LATERAL GLOBAL -->
+<div class="capa-home-page" [class.active]="isSidebarOpen()" (click)="closeSidebar()"></div>
+
+<aside class="cont-menu-home-page" [class.active]="isSidebarOpen()">
+    <button class="btn-close-sidebar" aria-label="Cerrar menú" (click)="closeSidebar()">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <nav class="lateral-nav-home-page">
+        <div class="lateral-menu-top-container">
+            <div class="lateral-menu-tittle">
+                <h2>Menú Principal</h2>
+            </div>
+            <div class="lateral-menu-options">
+                <a href="#" class="active"><i class="fa-solid fa-house"></i> Inicio</a>
+                <a href="#"><i class="fa-solid fa-compass"></i> Explorar</a>
+                <a href="#"><i class="fa-solid fa-store"></i> Tienda</a>                   
+                <a href="#"><i class="fa-solid fa-heart"></i> Favoritos</a>
+                <a href="#"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+                <a href="#"><i class="fa-solid fa-gamepad"></i> Foro</a>
+                <a href="#"><i class="fa-solid fa-code"></i> Developers</a>
+                <hr>
+                <a href="#"><i class="fa-solid fa-user"></i> Perfil</a>
+                <hr>
+            </div>
+        </div>
+
+        <div class="developers-container-home-page">
+            <a class="developer-card" href="#"><span class="role-tag">Scrum Master</span><strong>EXLEYDER GALLEGO</strong></a>
+            <a class="developer-card" href="#"><span class="role-tag">Desarrollador</span><strong>ANDRES CORTEZ</strong></a>
+            <a class="developer-card" href="#"><span class="role-tag">Desarrollador</span><strong>KEVIN URREGO</strong></a>
+        </div>
+
+        <div class="auth-buttons-container">
+            <button class="btn-auth btn-login advance-button"><i class="fa-solid fa-right-to-bracket"></i> Log In</button>
+            <button class="btn-auth btn-logout advance-button"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
+        </div>
+    </nav>
+</aside>
