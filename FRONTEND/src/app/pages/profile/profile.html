@@ -1,0 +1,37 @@
+<div class="profile-container">
+  @if (authService.currentUser(); as user) {
+    <div class="profile-header">
+      <img [src]="user.avatarUrl || 'assets/Kefex-ph.png'" [alt]="user.nombre" class="profile-avatar" />
+      <div class="profile-info">
+        <h2>{{ user.nombre }}</h2>
+        <p class="username">&#64;{{ user.username }}</p>
+        <p class="bio">{{ user.biografia || 'Sin biografía disponible' }}</p>
+      </div>
+    </div>
+
+    <div class="profile-tabs">
+      <button [class.active]="pestanaActiva === 'publicaciones'" (click)="cambiarPestana('publicaciones')">Mis Publicaciones</button>
+      <button [class.active]="pestanaActiva === 'configuracion'" (click)="cambiarPestana('configuracion')">Configuración</button>
+    </div>
+
+    <div class="profile-tab-content">
+      @if (pestanaActiva === 'publicaciones') {
+        <p>No has subido ninguna publicación aún.</p>
+      } @else {
+        <form class="config-form">
+          <label>Nombre
+            <input type="text" [value]="user.nombre" />
+          </label>
+          <label>Email
+            <input type="email" [value]="user.email" />
+          </label>
+          <button class="btn-primary" type="button">Guardar Cambios</button>
+        </form>
+      }
+    </div>
+  } @else {
+    <div class="login-prompt">
+      <p>Debes iniciar sesión para ver tu perfil de KEFEX.</p>
+    </div>
+  }
+</div>

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  imports: [],
   selector: 'app-carrito',
-  styleUrl: './carrito.css',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './carrito.html',
+  styleUrl: './carrito.css'
 })
-export class Carrito {}
+export class CarritoComponent {}

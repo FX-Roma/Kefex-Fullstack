@@ -1,0 +1,21 @@
+<div class="designers-container">
+  <header class="section-header">
+    <h1>Creadores y Diseñadores KEFEX</h1>
+    <p>Descubre el talento detrás de los proyectos de la plataforma.</p>
+  </header>
+
+  <div class="grid-designers">
+    @for (designer of designers(); track designer.id) {
+      <div class="designer-card">
+        <img [src]="designer.avatarUrl || 'assets/Kefex-ph.png'" [alt]="designer.nombre" class="designer-avatar" />
+        <h3>{{ designer.nombre }}</h3>
+        <p class="designer-handle">&#64;{{ designer.username }}</p>
+        <p class="designer-profesion">{{ designer.profesion }}</p>
+        <div class="stats-row">
+          <span>👥 {{ designer.seguidoresCount }} Seguidores</span>
+        </div>
+        <button class="btn-follow">Seguir Creador</button>
+      </div>
+    }
+  </div>
+</div>

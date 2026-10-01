@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  imports: [],
   selector: 'app-explorer',
-  styleUrl: './explorer.css',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './explorer.html',
+  styleUrl: './explorer.css'
 })
-export class Explorer {}
+export class ExplorerComponent {}

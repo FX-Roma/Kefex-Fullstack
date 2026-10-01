@@ -1,50 +1,49 @@
 import { Component, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+interface NavItem {
+  id: string;
+  label: string;
+  icon: string;
+  route: string;
+  badge?: string | number;
+}
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterLinkActive
+  ],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
+  styleUrls: ['./navbar.css']
 })
-export class Navbar {
-  // Estado reactivo del menú lateral (Sidebar Drawer)
-  isSidebarOpen = signal<boolean>(false);
+export class NavbarComponent {
+  isScrolled = signal<boolean>(false);
+  isMobileMenuOpen = signal<boolean>(false);
+  unreadNotifications = signal<number>(3);
 
-  // Estado para los popups interactivos de desarrolladores (K, F, X)
-  activeDeveloper = signal<string | null>(null);
+  navItems: NavItem[] = [
+    { id: 'inicio', label: 'Inicio', icon: 'home', route: '/' },
+    { id: 'explorer', label: 'Explorar', icon: 'compass', route: '/explorer' },
+    { id: 'foro', label: 'Foro', icon: 'message-square', route: '/foro', badge: 'En Vivo' },
+    { id: 'tienda', label: 'Tienda', icon: 'shopping-bag', route: '/tienda' },
+    { id: 'designers', label: 'Diseñadores', icon: 'users', route: '/designers' }
+  ];
 
-  // Contador de elementos en el carrito
-  cartCount = signal<number>(0);
-
-  // Métodos de control del menú lateral
-  openSidebar(): void {
-    this.isSidebarOpen.set(true);
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    this.isScrolled.set(window.scrollY > 20);
   }
 
-  closeSidebar(): void {
-    this.isSidebarOpen.set(false);
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen.set(false);
   }
 
-  toggleSidebar(): void {
-    this.isSidebarOpen.update(state => !state);
-  }
-
-  // Popups Desarrolladores
-  toggleDeveloper(dev: string, event: Event): void {
-    event.stopPropagation();
-    this.activeDeveloper.update(current => (current === dev ? null : dev));
-  }
-
-  @HostListener('document:click')
-  closeDeveloperPopups(): void {
-    this.activeDeveloper.set(null);
-  }
-
-  @HostListener('document:keydown.escape')
-  handleEscapeKey(): void {
-    this.closeSidebar();
-    this.closeDeveloperPopups();
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen.update((v: boolean) => !v);
   }
 }
