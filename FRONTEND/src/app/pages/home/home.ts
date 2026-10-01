@@ -77,22 +77,9 @@ readonly filteredProjects = computed(() => {
   ]);
 
   topCreators = signal<Creator[]>([
-    {
-      id: 1,
-      name: 'Carlos Mendoza',
-      role: 'Full Stack Architect',
-      avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&q=80&w=150',
-      projectsCount: 24,
-      isFollowing: false
-    },
-    {
-      id: 2,
-      name: 'Sofia Chen',
-      role: 'WebGL & Shader Specialist',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
-      projectsCount: 18,
-      isFollowing: true
-    }
+    { id: 1, name: 'Andrés Cortés', role: 'Desarrollador KEFEX', avatar: 'assets/Kefex-ph.png', projectsCount: 24, isFollowing: false },
+    { id: 2, name: 'Over Exleyder', role: 'Desarrollador KEFEX', avatar: 'assets/Kefex-ph.png', projectsCount: 18, isFollowing: false },
+    { id: 3, name: 'Kevin Urrego', role: 'Desarrollador KEFEX', avatar: 'assets/Kefex-ph.png', projectsCount: 16, isFollowing: false }
   ]);
 
   trendingTopics = ['#Angular18', '#WebAssembly', '#Tailwind4', '#RustDev', '#AIUI'];

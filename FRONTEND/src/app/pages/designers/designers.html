@@ -7,14 +7,32 @@
   <div class="grid-designers">
     @for (designer of designers(); track designer.id) {
       <div class="designer-card">
-        <img [src]="designer.avatarUrl || 'assets/Kefex-ph.png'" [alt]="designer.nombre" class="designer-avatar" />
+
+        <img
+          [src]="designer.avatarUrl || 'assets/Kefex-ph.png'"
+          [alt]="designer.nombre"
+          class="designer-avatar"
+          (error)="$any($event.target).src='assets/Kefex-ph.png'"
+        />
+
         <h3>{{ designer.nombre }}</h3>
-        <p class="designer-handle">&#64;{{ designer.username }}</p>
-        <p class="designer-profesion">{{ designer.profesion }}</p>
+
+        <p class="designer-handle">
+          &#64;{{ designer.username }}
+        </p>
+
+        <p class="designer-profesion">
+          {{ designer.profesion }}
+        </p>
+
         <div class="stats-row">
           <span>👥 {{ designer.seguidoresCount }} Seguidores</span>
         </div>
-        <button class="btn-follow">Seguir Creador</button>
+
+        <button class="btn-follow">
+          Seguir Creador
+        </button>
+
       </div>
     }
   </div>
