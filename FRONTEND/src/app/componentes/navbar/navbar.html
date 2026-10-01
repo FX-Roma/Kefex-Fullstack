@@ -1,81 +1,63 @@
 <header class="navbar-wrapper" [class.scrolled]="isScrolled()">
   <div class="navbar-container">
-    
-    <!-- Brand Logo con RouterLink -->
     <div class="brand-group" routerLink="/" (click)="closeMobileMenu()">
-      <div class="logo-box">
-        <span class="logo-symbol">K</span>
-        <div class="logo-glow"></div>
-      </div>
-      <div class="brand-text-group">
-        <span class="brand-name">KEFEX<span class="brand-dot">.</span></span>
-        <span class="brand-tag">DEV PLATFORM</span>
-      </div>
+      <div class="logo-box"><span class="logo-symbol">K</span><div class="logo-glow"></div></div>
+      <div class="brand-text-group"><span class="brand-name">KEFEX<span class="brand-dot">.</span></span><span class="brand-tag">DEV PLATFORM</span></div>
     </div>
 
-    <!-- Main Navigation con RouterLink & RouterLinkActive -->
     <nav class="nav-links" [class.mobile-open]="isMobileMenuOpen()">
       @for (item of navItems; track item.id) {
-        <a 
-          class="nav-item" 
-          [routerLink]="item.route"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: item.route === '/' }"
-          (click)="closeMobileMenu()">
+        <a class="nav-item" [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.route === '/' }" (click)="closeMobileMenu()">
           <div class="nav-icon-wrapper">
-            @switch (item.icon) {
-              @case ('home') {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              }
-              @case ('compass') {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
-              }
-              @case ('message-square') {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              }
-              @case ('shopping-bag') {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              }
-              @case ('users') {
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 1 0 7.75"/></svg>
-              }
+            @if (item.icon === 'home') {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            } @else {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
             }
           </div>
-          <span class="nav-label">{{ item.label }}</span>
-          @if (item.badge) {
-            <span class="nav-item-badge">{{ item.badge }}</span>
-          }
-          <div class="active-indicator"></div>
+          <span class="nav-label">{{ item.label }}</span><div class="active-indicator"></div>
         </a>
       }
     </nav>
 
-    <!-- Global Actions -->
     <div class="actions-group">
-      <div class="search-command">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <input type="text" placeholder="Buscar proyectos, tags, código..." />
-        <kbd class="command-shortcut">⌘K</kbd>
-      </div>
-
-      <button class="action-btn" aria-label="Notificaciones">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-        @if (unreadNotifications() > 0) {
-          <span class="pulse-badge"></span>
-        }
+      <div class="search-command"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Buscar proyectos, tags, código..." /><kbd class="command-shortcut">⌘K</kbd></div>
+      <button class="profile-avatar-wrapper" type="button" (click)="toggleAuth()" aria-label="Cuenta de usuario">
+        <img src="assets/Kefex-ph.png" alt="Avatar KEFEX" class="avatar-img" /><span class="status-online"></span>
       </button>
-
-      <div class="profile-avatar-wrapper" routerLink="/profile">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250" alt="Avatar Usuario" class="avatar-img" />
-        <span class="status-online"></span>
-      </div>
-
-      <button class="hamburger-toggle" [class.open]="isMobileMenuOpen()" (click)="toggleMobileMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <button class="hamburger-toggle" [class.open]="isMobileMenuOpen()" (click)="toggleMobileMenu()"><span></span><span></span><span></span></button>
     </div>
-
   </div>
+
+  @if (authOpen()) {
+    <div class="auth-backdrop" (click)="closeAuth()"></div>
+    <section class="auth-panel" (click)="$event.stopPropagation()">
+      <button class="auth-close" type="button" (click)="closeAuth()">×</button>
+      <img src="assets/Kefex-ph.png" alt="KEFEX" class="auth-logo" />
+      @if (auth.currentUser()) {
+        <h2>Hola, {{ auth.currentUser()?.nombre }}</h2><p class="auth-subtitle">Tu sesión está activa.</p>
+        <button class="primary-auth-btn" type="button" (click)="logout()">Cerrar sesión</button>
+      } @else if (authMode() === 'login') {
+        <h2>Iniciar sesión</h2><p class="auth-subtitle">Accede a tu cuenta KEFEX.</p>
+        <form (ngSubmit)="submitLogin()">
+          <label>Correo o usuario<input name="identificador" [(ngModel)]="loginData.identificador" required autocomplete="username" placeholder="correo@ejemplo.com" /></label>
+          <label>Contraseña<input name="contrasena" [(ngModel)]="loginData.contrasena" required type="password" autocomplete="current-password" placeholder="••••••••" /></label>
+          @if (authMessage()) { <p class="auth-error">{{ authMessage() }}</p> }
+          <button class="primary-auth-btn" type="submit" [disabled]="loading()">{{ loading() ? 'Ingresando...' : 'Ingresar' }}</button>
+        </form>
+        <button class="auth-link" type="button" (click)="showRegister()">¿No tienes cuenta? Crear usuario</button>
+      } @else {
+        <h2>Crear usuario</h2><p class="auth-subtitle">Regístrate para entrar a KEFEX.</p>
+        <form (ngSubmit)="submitRegister()">
+          <label>Nombre<input name="nombre" [(ngModel)]="registerData.nombre" required placeholder="Tu nombre" /></label>
+          <label>Usuario<input name="username" [(ngModel)]="registerData.username" required placeholder="usuario_kefex" /></label>
+          <label>Correo<input name="correo" [(ngModel)]="registerData.correo" required type="email" placeholder="correo@ejemplo.com" /></label>
+          <label>Contraseña<input name="regContrasena" [(ngModel)]="registerData.contrasena" required type="password" minlength="6" placeholder="••••••••" /></label>
+          @if (authMessage()) { <p class="auth-error">{{ authMessage() }}</p> }
+          <button class="primary-auth-btn" type="submit" [disabled]="loading()">{{ loading() ? 'Creando...' : 'Crear cuenta' }}</button>
+        </form>
+        <button class="auth-link" type="button" (click)="showLogin()">¿Ya tienes cuenta? Iniciar sesión</button>
+      }
+    </section>
+  }
 </header>
