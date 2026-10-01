@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  imports: [],
   selector: 'app-tienda',
-  styleUrl: './tienda.css',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './tienda.html',
+  styleUrl: './tienda.css'
 })
-export class Tienda {}
+export class TiendaComponent {}

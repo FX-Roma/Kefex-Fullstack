@@ -1,0 +1,71 @@
+<div class="foro-container">
+  <header class="foro-header">
+    <h1>Foro de la Comunidad KEFEX</h1>
+    <button class="btn-primary" (click)="abrirModal()">+ Crear Nuevo Hilo</button>
+  </header>
+
+  <div class="foro-grid">
+    <aside class="foro-sidebar">
+      <h3>Categorías</h3>
+      <ul>
+        <li [class.active]="categoriaFiltro() === 'todos'" (click)="categoriaFiltro.set('todos')">Todas</li>
+        <li [class.active]="categoriaFiltro() === 'Diseño'" (click)="categoriaFiltro.set('Diseño')">Diseño</li>
+        <li [class.active]="categoriaFiltro() === 'Desarrollo'" (click)="categoriaFiltro.set('Desarrollo')">Desarrollo</li>
+        <li [class.active]="categoriaFiltro() === 'General'" (click)="categoriaFiltro.set('General')">General</li>
+      </ul>
+    </aside>
+
+    <main class="foro-main">
+      @for (hilo of hilos(); track hilo.id) {
+        @if (categoriaFiltro() === 'todos' || hilo.categoria === categoriaFiltro()) {
+          <div class="hilo-card">
+            <div class="votos-box">
+              <button (click)="votar(hilo.id, 'up')">▲</button>
+              <span>{{ hilo.votosCount }}</span>
+              <button (click)="votar(hilo.id, 'down')">▼</button>
+            </div>
+            <div class="hilo-content">
+              <span class="categoria-tag">{{ hilo.categoria }}</span>
+              <h2>{{ hilo.titulo }}</h2>
+              <p>{{ hilo.contenido }}</p>
+              <div class="hilo-meta">
+                <span>Por {{ hilo.autorNombre }}</span>
+                <span>💬 {{ hilo.comentariosCount }} Comentarios</span>
+                <span>{{ hilo.fechaCreacion | date:'shortDate' }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </main>
+  </div>
+
+  <!-- Modal Angular Nativo sin Manipulación DOM -->
+  @if (modalCrearAbierto) {
+    <div class="modal-backdrop" (click)="cerrarModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h2>Crear Nuevo Hilo de Discusión</h2>
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" [(ngModel)]="nuevoTitulo" placeholder="Escribe el título..." />
+        </div>
+        <div class="form-group">
+          <label>Categoría</label>
+          <select [(ngModel)]="nuevaCategoria">
+            <option value="General">General</option>
+            <option value="Diseño">Diseño</option>
+            <option value="Desarrollo">Desarrollo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Contenido</label>
+          <textarea [(ngModel)]="nuevoContenido" rows="5" placeholder="Escribe tu publicación..."></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+          <button class="btn-primary" (click)="crearNuevoHilo()">Publicar</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
