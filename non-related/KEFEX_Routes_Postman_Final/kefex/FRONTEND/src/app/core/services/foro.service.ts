@@ -1,0 +1,16 @@
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { environment } from '../../enviroments/enviroment';
+import { ForoPost, Comentario } from '../models/foro.model';
+interface ApiComment { _id: string; texto: string; autor?: { nombre?: string; avatar?: string }; createdAt?: string; }
+interface ApiOpinion { _id: string; title: string; opinion: string; category: string; author?: { name?: string; avatar?: string }; votes?: number; score?: number; commentsCount?: number; createdAt?: string; }
+@Injectable({ providedIn: 'root' })
+export class ForoService {
+  private readonly http = inject(HttpClient); private readonly opinionsUrl = `${environment.apiUrl}/opinions`; private readonly commentsUrl = `${environment.apiUrl}/comments`;
+  obtenerHilos(): Observable<ForoPost[]> { return this.http.get<{ data?: ApiOpinion[] } | ApiOpinion[]>(this.opinionsUrl).pipe(map(response => { const list = Array.isArray(response) ? response : response.data ?? []; return list.map(item => ({ id: item._id, titulo: item.title, contenido: item.opinion, categoria: item.category, autorNombre: item.author?.name || 'Comunidad KEFEX', autorAvatar: item.author?.avatar || '', votosCount: item.votes ?? 0, score: item.score ?? 0, comentariosCount: item.commentsCount ?? 0, fechaCreacion: item.createdAt || new Date().toISOString() })); })); }
+  crearHilo(post: Partial<ForoPost> & { authorName?: string; score?: number }): Observable<ForoPost> { return this.http.post<{ data: ApiOpinion }>(this.opinionsUrl, { title: post.titulo, opinion: post.contenido, category: this.mapCategory(post.categoria), score: post.score ?? 5, author: { name: post.authorName || 'Miembro KEFEX' }, isUserPost: true }).pipe(map(response => { const item = response.data; return { id: item._id, titulo: item.title, contenido: item.opinion, categoria: item.category, autorNombre: item.author?.name || 'Comunidad KEFEX', autorAvatar: item.author?.avatar || '', votosCount: item.votes ?? 0, score: item.score ?? 0, comentariosCount: item.commentsCount ?? 0, fechaCreacion: item.createdAt || new Date().toISOString() }; })); }
+  obtenerComentarios(hiloId: string | number): Observable<Comentario[]> { return this.http.get<{ data?: ApiComment[] }>(this.commentsUrl, { params: { opinionId: String(hiloId) } }).pipe(map(response => (response.data ?? []).map(item => ({ id: item._id, autorNombre: item.autor?.nombre || 'Miembro KEFEX', autorAvatar: item.autor?.avatar || '', contenido: item.texto, fecha: item.createdAt || '' })))); }
+  agregarComentario(hiloId: string | number, comentario: string): Observable<Comentario> { return this.http.post<{ data: ApiComment }>(this.commentsUrl, { opinionId: hiloId, texto: comentario }).pipe(map(response => ({ id: response.data._id, autorNombre: response.data.autor?.nombre || 'Miembro KEFEX', autorAvatar: response.data.autor?.avatar || '', contenido: response.data.texto, fecha: response.data.createdAt || '' }))); }
+  private mapCategory(category?: string): string { const map: Record<string, string> = { General: 'ecommerce', Diseño: 'technology', Desarrollo: 'technology', Gaming: 'gaming', 'E-commerce': 'ecommerce' }; return map[category || 'General'] || 'ecommerce'; }
+}

@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import siteReviewController from '../Controller/E-siteReviewController.js';
+import { autenticar, autorizarRoles } from '../middleware/auth.middleware.js';
+const routerSites = Router();
+routerSites.get('/', siteReviewController.getAllSites);
+routerSites.get('/featured', siteReviewController.getFeaturedSite);
+routerSites.get('/:id', siteReviewController.getSiteById);
+routerSites.post('/', autenticar, autorizarRoles('admin'), siteReviewController.createSite);
+routerSites.put('/:id', autenticar, autorizarRoles('admin'), siteReviewController.updateSite);
+routerSites.delete('/:id', autenticar, autorizarRoles('admin'), siteReviewController.deleteSite);
+export default routerSites;

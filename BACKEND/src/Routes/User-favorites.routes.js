@@ -1,0 +1,10 @@
+import express from 'express';
+import { agregarFavorito, obtenerFavoritos, obtenerFavoritosPorUsuario, eliminarFavorito } from '../Controller/User-favorites.controller.js';
+import { autenticar } from '../middleware/auth.middleware.js';
+const router = express.Router();
+router.use(autenticar);
+router.post('/', agregarFavorito);
+router.get('/', obtenerFavoritos);
+router.get('/usuario/:usuarioId', obtenerFavoritosPorUsuario);
+router.delete('/:id', eliminarFavorito);
+export default router;

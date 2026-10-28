@@ -1,0 +1,192 @@
+<div class="home-container">
+  
+  <!-- Ambient Glow Elements -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Hero Section Header -->
+  <section class="hero-section">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      COMUNIDAD DE RESEÑAS · KEFEX
+    </div>
+    <h1 class="hero-title">
+      Decide mejor con <span class="text-gradient">experiencias reales.</span>
+    </h1>
+    <p class="hero-description">
+      Descubre opiniones honestas sobre tiendas y productos, compara experiencias y conversa con una comunidad que investiga antes de comprar.
+    </p>
+
+    <!-- Hero Stats Counter -->
+    <div class="hero-stats">
+      <div class="stat-box">
+        <span class="stat-number">Comunidad</span>
+        <span class="stat-desc">Voces reales</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-box">
+        <span class="stat-number">Opiniones</span>
+        <span class="stat-desc">Experiencias</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-box">
+        <span class="stat-number">360°</span>
+        <span class="stat-desc">Perspectiva de compra</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Feed & Sidebar Grid -->
+  <div class="content-grid">
+    
+    <!-- Feed Column Left -->
+    <section class="feed-column">
+      
+      <!-- Feed Filter Navigation Bar -->
+      <div class="feed-tabs">
+        <button 
+          class="tab-btn" 
+          [class.active]="selectedTab() === 'explore'" 
+          (click)="setTab('explore')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Explorar Feed
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="selectedTab() === 'following'" 
+          (click)="setTab('following')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Siguiendo
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="selectedTab() === 'trending'" 
+          (click)="setTab('trending')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          Tendencias
+        </button>
+      </div>
+
+      <!-- Quick Post Input trigger -->
+      <div class="create-post-card">
+        <img src="assets/Kefex-ph.png" class="mini-avatar" alt="User" />
+        <div class="post-input-placeholder">
+          ¿Qué producto o experiencia quieres compartir?
+        </div>
+        <a class="publish-btn" routerLink="/foro">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Publicar
+        </a>
+      </div>
+
+      @if (publicacionesService.isDemoMode()) { <p class="demo-notice">Contenido de demostración: la API de publicaciones no está disponible.</p> }
+      @if (feedbackMessage()) { <p class="demo-notice" role="status">{{ feedbackMessage() }}</p> }
+      <!-- Feed List -->
+      <div class="posts-list">
+        @for (post of visiblePublications(); track post.id) {
+          <article class="post-card">
+            
+            <!-- Post Header -->
+            <div class="post-card-header">
+              <div class="author-details">
+                <img [src]="post.authorAvatar" [alt]="post.authorName" class="author-img" />
+                <div class="author-meta">
+                  <div class="name-row">
+                    <span class="author-name">{{ post.authorName }}</span>
+                    <span class="role-badge">{{ post.badgeRole }}</span>
+                  </div>
+                  <span class="author-handle">{{ post.authorHandle }} • {{ post.timeAgo }}</span>
+                </div>
+              </div>
+              <span class="category-pill">{{ post.category }}</span>
+            </div>
+
+            <!-- Post Body -->
+            <h2 class="post-title">{{ post.title }}</h2>
+            <p class="post-text">{{ post.content }}</p>
+
+            <!-- Optional Code Block Container -->
+            @if (post.codeSnippet) {
+              <div class="code-preview-box">
+                <div class="code-header">
+                  <span class="code-lang">TypeScript</span>
+                  <button class="copy-code-btn">Copiar</button>
+                </div>
+                <pre><code>{{ post.codeSnippet }}</code></pre>
+              </div>
+            }
+
+            <!-- Tags -->
+            <div class="post-tags">
+              @for (tag of post.tags; track tag) {
+                <span class="post-tag">#{{ tag }}</span>
+              }
+            </div>
+
+            <!-- Post Footer Actions -->
+            <div class="post-card-footer">
+              <div class="interaction-group">
+                <div class="action-link" aria-label="Reacciones disponibles cuando la API las implemente">
+                  <svg viewBox="0 0 24 24" [attr.fill]="post.isLiked ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <span>{{ post.likes }}</span>
+                </div>
+
+                <a class="action-link" routerLink="/foro">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  <span>{{ post.commentsCount }} Comentarios</span>
+                </a>
+
+                <div class="view-count">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>{{ post.views }}</span>
+                </div>
+              </div>
+
+              <button class="bookmark-btn" type="button" [class.bookmarked]="post.isBookmarked" [attr.aria-label]="post.isBookmarked ? 'Quitar de favoritos' : 'Guardar en favoritos'" (click)="toggleBookmark(post)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+              </button>
+            </div>
+
+          </article>
+        } @empty {
+          <div class="post-card empty-feed"><strong>{{ selectedTab() === 'following' ? 'Aún no sigues conversaciones.' : 'Todavía no hay publicaciones para mostrar.' }}</strong><p>{{ selectedTab() === 'following' ? 'Explora el foro y participa en temas que te interesen.' : 'Cuando el servicio de publicaciones tenga contenido, aparecerá aquí.' }}</p><a routerLink="/foro">Descubrir conversaciones ↗</a></div>
+        }
+      </div>
+
+    </section>
+
+    <!-- Sidebar Column Right -->
+    <aside class="sidebar-column">
+      
+      <!-- Widget: Trending Topics -->
+      <div class="sidebar-widget">
+        <h3 class="widget-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Tendencias en KEFEX
+        </h3>
+        <div class="tags-cloud">
+          @for (topic of trendingTopics; track topic) {
+            <a class="topic-chip">{{ topic }}</a>
+          }
+        </div>
+      </div>
+
+      <!-- Widget: Community state -->
+      <div class="sidebar-widget community-note">
+        <h3 class="widget-title">Comunidad KEFEX</h3>
+        <p>Los perfiles destacados aparecerán aquí cuando tengamos datos reales de actividad y seguimiento.</p>
+        <a routerLink="/foro">Participar en el foro ↗</a>
+      </div>
+
+      <!-- Footer Info -->
+      <footer class="widget-footer">
+        <p>© 2026 KEFEX Ecosystem. Todos los derechos reservados.</p>
+        <div class="footer-links">
+          <a>Términos</a> • <a>Privacidad</a> • <a>API Docs</a>
+        </div>
+      </footer>
+
+    </aside>
+
+  </div>
+</div>

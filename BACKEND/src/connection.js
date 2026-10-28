@@ -1,10 +1,7 @@
-import mongoose from "mongoose";
-
-mongoose
-  .connect(process.env.KEFEX)
-  .then((dato) => {
-    console.log("Esta conectado a la base de datos de kefex");
-  })
-  .catch((error) => {
-    console.log("Error de conexión:", error);
-  });
+import mongoose from 'mongoose';
+export async function connectDatabase() {
+  const uri = process.env.KEFEX;
+  if (!uri) throw new Error('La variable KEFEX (MongoDB connection URI) no está configurada.');
+  await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
+  console.log('MongoDB conectado correctamente.');
+}

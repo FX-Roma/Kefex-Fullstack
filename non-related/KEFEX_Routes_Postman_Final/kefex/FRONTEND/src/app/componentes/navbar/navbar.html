@@ -1,0 +1,28 @@
+<header class="navbar-wrapper" [class.scrolled]="isScrolled()">
+  <div class="navbar-container">
+    <a class="brand-group" routerLink="/" (click)="closeMobileMenu()" aria-label="KEFEX inicio">
+      <span class="logo-box"><span class="logo-symbol">K</span><span class="logo-glow"></span></span>
+      <span class="brand-text-group"><span class="brand-name">KEFEX<span class="brand-dot">.</span></span><span class="brand-tag">TRUST THE EXPERIENCE</span></span>
+    </a>
+    <nav class="nav-links" [class.mobile-open]="isMobileMenuOpen()" aria-label="Navegación principal">
+      @for (item of navItems; track item.id) {
+        <a class="nav-item" [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.route === '/' }" (click)="closeMobileMenu()">{{ item.label }} @if (item.badge) { <span class="nav-item-badge">{{ item.badge }}</span> }</a>
+      }
+      <a class="nav-item" routerLink="/tienda" routerLinkActive="active" (click)="closeMobileMenu()">Tienda</a>
+      @if (authService.currentUser()) {
+        <a class="nav-item compact-link" routerLink="/favoritos" routerLinkActive="active" (click)="closeMobileMenu()">Favoritos</a>
+        <a class="nav-item compact-link" routerLink="/carrito" routerLinkActive="active" (click)="closeMobileMenu()">Carrito</a>
+      }
+      @if (authService.getUserRole() === 'admin') { <a class="nav-item admin-link" routerLink="/admin" routerLinkActive="active" (click)="closeMobileMenu()">Admin</a> }
+    </nav>
+    <div class="actions-group">
+      @if (authService.currentUser(); as user) {
+        <a class="profile-link" routerLink="/perfil" (click)="closeMobileMenu()"><span class="user-greeting">{{ user.name || user.nombre || 'Mi cuenta' }}</span></a>
+        <button class="logout-btn" type="button" (click)="handleLogout()">Salir</button>
+      } @else {
+        <a class="login-nav-btn" routerLink="/login" (click)="closeMobileMenu()">Iniciar sesión</a>
+      }
+      <button class="hamburger-toggle" type="button" (click)="toggleMobileMenu()" [attr.aria-expanded]="isMobileMenuOpen()" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>

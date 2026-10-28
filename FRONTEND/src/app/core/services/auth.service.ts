@@ -1,44 +1,68 @@
-import { Injectable, inject, signal, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, tap, catchError, throwError } from 'rxjs';
-import { Usuario } from '../models/usuario.model';
-
-interface AuthResponse { token: string; usuario: Usuario; }
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../enviroments/enviroment';
+import { Credential, AuthResponse, DecodedToken } from '../models/credential';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private http = inject(HttpClient);
-  private platformId = inject(PLATFORM_ID);
-  private readonly API_URL = 'http://localhost:3005/api/auth';
-  currentUser = signal<Usuario | null>(null);
-  tokenKey = 'kefex_auth_token';
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = `${environment.apiUrl}/auth`;
+  readonly currentUser = signal<DecodedToken | null>(this.getInitialTokenState());
 
-  constructor() { if (isPlatformBrowser(this.platformId)) this.cargarSesionGuardada(); }
-
-  login(credenciales: { identificador: string; contrasena: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/login`, credenciales).pipe(tap(res => this.guardarSesion(res)), catchError(err => throwError(() => err)));
+  login(credential: Credential): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/inicio-sesion`, credential);
   }
 
-  register(datos: { nombre: string; username: string; correo: string; contrasena: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/register`, datos).pipe(tap(res => this.guardarSesion(res)), catchError(err => throwError(() => err)));
+  register(payload: { name: string; email: string; password: string }): Observable<{ result: string; message: string }> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/registro`, payload);
   }
 
-  logout(): void { if (isPlatformBrowser(this.platformId)) localStorage.removeItem(this.tokenKey); this.currentUser.set(null); }
-  getToken(): string | null { return isPlatformBrowser(this.platformId) ? localStorage.getItem(this.tokenKey) : null; }
-  estaAutenticado(): boolean { return !!this.getToken(); }
-
-  private guardarSesion(res: AuthResponse): void {
-    if (isPlatformBrowser(this.platformId)) localStorage.setItem(this.tokenKey, res.token);
-    this.currentUser.set(res.usuario);
+  setToken(token: string): void {
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem('token', token);
+    this.currentUser.set(this.decodeToken(token));
   }
 
-  private cargarSesionGuardada(): void {
-    const token = this.getToken(); if (!token) return;
-    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-    this.http.get<any>(`${this.API_URL}/me`, { headers }).subscribe({
-      next: res => this.currentUser.set(res.usuario ?? res),
-      error: () => this.logout()
-    });
+  getToken(): string | null {
+    return typeof window === 'undefined' ? null : window.localStorage.getItem('token');
+  }
+
+  logout(): void {
+    if (typeof window !== 'undefined') window.localStorage.removeItem('token');
+    this.currentUser.set(null);
+  }
+
+  decodeToken(token: string): DecodedToken | null {
+    try {
+      const decoded = jwtDecode<DecodedToken>(token);
+      return {
+        ...decoded,
+        nombre: decoded.nombre || decoded.name || 'Usuario',
+        username: decoded.username || decoded.email || '',
+        avatarUrl: decoded.avatarUrl || decoded.avatar || '',
+        biografia: decoded.biografia || '',
+        rol: decoded.rol === 'admin' ? 'admin' : 'user'
+      };
+    } catch { return null; }
+  }
+
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+    const decoded = this.decodeToken(token);
+    return Boolean(decoded?.exp && decoded.exp * 1000 > Date.now());
+  }
+
+  getUserRole(): 'user' | 'admin' | null {
+    if (!this.isAuthenticated()) return null;
+    return this.currentUser()?.rol ?? null;
+  }
+
+  private getInitialTokenState(): DecodedToken | null {
+    const token = this.getToken();
+    const decoded = token ? this.decodeToken(token) : null;
+    return decoded?.exp && decoded.exp * 1000 > Date.now() ? decoded : null;
   }
 }

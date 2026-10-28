@@ -1,14 +1,19 @@
+/** API contract aligned with Back/src/Models/E-productStoreModule.js. */
 export interface Producto {
-  id: string | number;
+  _id: string;
   nombre: string;
   descripcion: string;
   precio: number;
-  imagenUrl: string;
   categoria: string;
+  imagen: string;
   stock: number;
+  valoracion: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface CarritoItem {
   producto: Producto;
   cantidad: number;
+  subtotal?: number;
 }

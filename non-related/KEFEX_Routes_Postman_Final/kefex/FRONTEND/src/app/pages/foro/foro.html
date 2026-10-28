@@ -1,0 +1,132 @@
+<main class="page-shell forum-page">
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">Comunidad / Conversaciones</span>
+      <h1>El foro <span class="text-gradient">KEFEX</span></h1>
+      <p>Pregunta, comparte una experiencia y conversa con personas que también investigan antes de comprar.</p>
+    </div>
+    <button class="btn-primary" type="button" (click)="abrirModal()">＋ Crear hilo</button>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="forum-alert" role="status">
+      {{ errorMessage() }}
+      <button type="button" (click)="cargarHilos()">Actualizar</button>
+    </div>
+  }
+
+  <div class="forum-layout">
+    <aside class="surface forum-sidebar">
+      <span class="eyebrow">Filtrar por tema</span>
+      <h2>Categorías</h2>
+      <button [class.active]="categoriaFiltro() === 'todos'" (click)="categoriaFiltro.set('todos')">Todas las conversaciones</button>
+      <button [class.active]="categoriaFiltro() === 'ecommerce'" (click)="categoriaFiltro.set('ecommerce')">E-commerce</button>
+      <button [class.active]="categoriaFiltro() === 'technology'" (click)="categoriaFiltro.set('technology')">Tecnología</button>
+      <button [class.active]="categoriaFiltro() === 'gaming'" (click)="categoriaFiltro.set('gaming')">Gaming</button>
+      <div class="sidebar-tip">
+        <strong>Una buena reseña</strong>
+        <p>Explica el contexto, qué funcionó y qué mejorarías. La experiencia concreta ayuda más que una puntuación aislada.</p>
+      </div>
+    </aside>
+
+    <section class="forum-main">
+      @if (loading()) {
+        <div class="surface empty-state">Cargando conversaciones…</div>
+      } @else {
+        @for (hilo of hilos(); track hilo.id) {
+          @if (categoriaFiltro() === 'todos' || hilo.categoria === categoriaFiltro()) {
+            <article class="surface hilo-card">
+              <div class="hilo-votes rating-score">
+                <strong>{{ hilo.score || 0 }}/5</strong>
+                <span>Valoración</span>
+              </div>
+              <div class="hilo-content">
+                <div class="hilo-top">
+                  <span class="category-pill">{{ hilo.categoria }}</span>
+                  <span>{{ hilo.fechaCreacion | date:'mediumDate' }}</span>
+                </div>
+                <h2>{{ hilo.titulo }}</h2>
+                <p>{{ hilo.contenido }}</p>
+                <div class="hilo-meta">
+                  <span>Por <strong>{{ hilo.autorNombre }}</strong></span>
+                  <button class="comments-toggle" type="button" (click)="toggleComments(hilo)">◌ {{ hilo.comentariosCount }} comentarios</button>
+                </div>
+
+                @if (activeThread() === hilo.id) {
+                  <section class="comments-panel">
+                    <h3>Comentarios</h3>
+                    @for (comment of (commentsByThread()[threadKey(hilo.id)] || []); track comment.id) {
+                      <article class="comment-item">
+                        <strong>{{ comment.autorNombre }}</strong>
+                        <p>{{ comment.contenido }}</p>
+                        <time>{{ comment.fecha | date:'short' }}</time>
+                      </article>
+                    }
+                    @if ((commentsByThread()[threadKey(hilo.id)] || []).length === 0) {
+                      <p class="muted">Todavía no hay comentarios. Puedes iniciar la conversación.</p>
+                    }
+                    <form class="comment-form" (ngSubmit)="submitComment(hilo)">
+                      <input name="commentDraft" [(ngModel)]="commentDraft" maxlength="3000" placeholder="Escribe un comentario…" [disabled]="!auth.isAuthenticated()" />
+                      <button class="btn-primary" type="submit" [disabled]="!auth.isAuthenticated() || !commentDraft.trim()">Comentar</button>
+                    </form>
+                    @if (!auth.isAuthenticated()) {
+                      <p class="muted"><a routerLink="/login">Inicia sesión</a> para comentar.</p>
+                    }
+                  </section>
+                }
+              </div>
+            </article>
+          }
+        }
+        @if (hilos().length === 0) {
+          <div class="surface empty-state">
+            <strong>Abre la primera conversación</strong>
+            <p>La comunidad empieza con una buena pregunta.</p>
+            <button class="btn-primary" type="button" (click)="abrirModal()">Crear primer hilo</button>
+          </div>
+        }
+      }
+    </section>
+  </div>
+
+  @if (modalCrearAbierto()) {
+    <div class="modal-backdrop" (click)="cerrarModal()">
+      <section class="modal-content surface" role="dialog" aria-modal="true" aria-labelledby="create-thread-title" (click)="$event.stopPropagation()">
+        <span class="eyebrow">Nueva conversación</span>
+        <h2 id="create-thread-title">Comparte con la comunidad</h2>
+        <div class="field">
+          <label for="thread-title">Título</label>
+          <input id="thread-title" [(ngModel)]="nuevoTitulo" maxlength="140" placeholder="¿Qué te gustaría conversar?" />
+        </div>
+        <div class="field">
+          <label for="thread-category">Categoría</label>
+          <select id="thread-category" [(ngModel)]="nuevaCategoria">
+            <option value="General">General</option>
+            <option value="Diseño">Diseño</option>
+            <option value="Desarrollo">Desarrollo</option>
+            <option value="Gaming">Gaming</option>
+            <option value="E-commerce">E-commerce</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="thread-rating">Valoración (1 a 5)</label>
+          <select id="thread-rating" [(ngModel)]="nuevaPuntuacion">
+            <option [ngValue]="5">★★★★★ · 5</option>
+            <option [ngValue]="4">★★★★☆ · 4</option>
+            <option [ngValue]="3">★★★☆☆ · 3</option>
+            <option [ngValue]="2">★★☆☆☆ · 2</option>
+            <option [ngValue]="1">★☆☆☆☆ · 1</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="thread-content">Contenido</label>
+          <textarea id="thread-content" [(ngModel)]="nuevoContenido" rows="5" maxlength="5000" placeholder="Añade contexto, detalles y tu experiencia…"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-secondary" type="button" (click)="cerrarModal()">Cancelar</button>
+          <button class="btn-primary" type="button" (click)="crearNuevoHilo()">Publicar hilo</button>
+        </div>
+      </section>
+    </div>
+  }
+</main>

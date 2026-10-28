@@ -8,30 +8,30 @@
   <section class="hero-section">
     <div class="hero-badge">
       <span class="badge-dot"></span>
-      Ecosistema Comunitario v2.4
+      COMUNIDAD DE RESEÑAS · KEFEX
     </div>
     <h1 class="hero-title">
-      Donde la innovación <span class="text-gradient">Frontend & UI</span> cobra vida
+      Decide mejor con <span class="text-gradient">experiencias reales.</span>
     </h1>
     <p class="hero-description">
-      Plataforma de alta precisión para desarrolladores e ingenieros de interfaz. Comparte componentes, debate arquitectura y escala tus proyectos.
+      Descubre opiniones honestas sobre tiendas y productos, compara experiencias y conversa con una comunidad que investiga antes de comprar.
     </p>
 
     <!-- Hero Stats Counter -->
     <div class="hero-stats">
       <div class="stat-box">
-        <span class="stat-number">12.8k</span>
-        <span class="stat-desc">Desarrolladores</span>
+        <span class="stat-number">Comunidad</span>
+        <span class="stat-desc">Voces reales</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-box">
-        <span class="stat-number">4.2k</span>
-        <span class="stat-desc">Componentes</span>
+        <span class="stat-number">Opiniones</span>
+        <span class="stat-desc">Experiencias</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-box">
-        <span class="stat-number">99.9%</span>
-        <span class="stat-desc">Uptime Código</span>
+        <span class="stat-number">360°</span>
+        <span class="stat-desc">Perspectiva de compra</span>
       </div>
     </div>
   </section>
@@ -71,17 +71,19 @@
       <div class="create-post-card">
         <img src="assets/Kefex-ph.png" class="mini-avatar" alt="User" />
         <div class="post-input-placeholder">
-          ¿Qué patrón o componente estás construyendo hoy?
+          ¿Qué producto o experiencia quieres compartir?
         </div>
-        <button class="publish-btn">
+        <a class="publish-btn" routerLink="/foro">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
           Publicar
-        </button>
+        </a>
       </div>
 
+      @if (publicacionesService.isDemoMode()) { <p class="demo-notice">Contenido de demostración: la API de publicaciones no está disponible.</p> }
+      @if (feedbackMessage()) { <p class="demo-notice" role="status">{{ feedbackMessage() }}</p> }
       <!-- Feed List -->
       <div class="posts-list">
-        @for (post of publications(); track post.id) {
+        @for (post of visiblePublications(); track post.id) {
           <article class="post-card">
             
             <!-- Post Header -->
@@ -124,15 +126,15 @@
             <!-- Post Footer Actions -->
             <div class="post-card-footer">
               <div class="interaction-group">
-                <button class="action-link" [class.liked]="post.isLiked" (click)="toggleLike(post)">
+                <div class="action-link" aria-label="Reacciones disponibles cuando la API las implemente">
                   <svg viewBox="0 0 24 24" [attr.fill]="post.isLiked ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                   <span>{{ post.likes }}</span>
-                </button>
+                </div>
 
-                <button class="action-link">
+                <a class="action-link" routerLink="/foro">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                   <span>{{ post.commentsCount }} Comentarios</span>
-                </button>
+                </a>
 
                 <div class="view-count">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -140,12 +142,14 @@
                 </div>
               </div>
 
-              <button class="bookmark-btn">
+              <button class="bookmark-btn" type="button" [class.bookmarked]="post.isBookmarked" [attr.aria-label]="post.isBookmarked ? 'Quitar de favoritos' : 'Guardar en favoritos'" (click)="toggleBookmark(post)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
               </button>
             </div>
 
           </article>
+        } @empty {
+          <div class="post-card empty-feed"><strong>{{ selectedTab() === 'following' ? 'Aún no sigues conversaciones.' : 'Todavía no hay publicaciones para mostrar.' }}</strong><p>{{ selectedTab() === 'following' ? 'Explora el foro y participa en temas que te interesen.' : 'Cuando el servicio de publicaciones tenga contenido, aparecerá aquí.' }}</p><a routerLink="/foro">Descubrir conversaciones ↗</a></div>
         }
       </div>
 
@@ -167,29 +171,11 @@
         </div>
       </div>
 
-      <!-- Widget: Recommended Creators -->
-      <div class="sidebar-widget">
-        <h3 class="widget-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-          Diseñadores Destacados
-        </h3>
-        <div class="creators-list">
-          @for (creator of topCreators(); track creator.id) {
-            <div class="creator-item">
-              <img [src]="creator.avatar" [alt]="creator.name" class="creator-avatar" />
-              <div class="creator-info">
-                <span class="creator-name">{{ creator.name }}</span>
-                <span class="creator-role">{{ creator.role }}</span>
-              </div>
-              <button 
-                class="follow-btn" 
-                [class.following]="creator.isFollowing" 
-                (click)="toggleFollow(creator)">
-                {{ creator.isFollowing ? 'Siguiendo' : 'Seguir' }}
-              </button>
-            </div>
-          }
-        </div>
+      <!-- Widget: Community state -->
+      <div class="sidebar-widget community-note">
+        <h3 class="widget-title">Comunidad KEFEX</h3>
+        <p>Los perfiles destacados aparecerán aquí cuando tengamos datos reales de actividad y seguimiento.</p>
+        <a routerLink="/foro">Participar en el foro ↗</a>
       </div>
 
       <!-- Footer Info -->

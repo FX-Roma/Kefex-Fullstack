@@ -1,8 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { PublicacionesService } from '../../core/services/publicaciones.service';
+import { FavoritosService } from '../../core/services/favoritos.service';
+import { AuthService } from '../../core/services/auth.service';
 
 interface Publication {
-  id: number;
+  id: string | number;
   authorName: string;
   authorHandle: string;
   authorAvatar: string;
@@ -20,80 +24,63 @@ interface Publication {
   isBookmarked?: boolean;
 }
 
-interface Creator {
-  id: number;
-  name: string;
-  role: string;
-  avatar: string;
-  projectsCount: number;
-  isFollowing: boolean;
-}
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
 export class HomeComponent {
+  readonly publicacionesService = inject(PublicacionesService);
+  private readonly favoritosService = inject(FavoritosService);
+  private readonly authService = inject(AuthService);
+  readonly feedbackMessage = signal('');
   selectedTab = signal<'explore' | 'following' | 'trending'>('explore');
+  publications = signal<Publication[]>([]);
 
-  publications = signal<Publication[]>([
-    {
-      id: 1,
-      authorName: 'Alex Rivera',
-      authorHandle: '@arivera_dev',
-      authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150',
-      badgeRole: 'Staff Frontend',
-      timeAgo: 'Hace 45 min',
-      title: 'Optimizando la renderización con Angular Signals y Zoneless Architecture',
-      content: 'El futuro de Angular sin Zone.js ya está aquí. Implementamos una estrategia completa de reatividad fina para reducir el bundle final y disparar la tasa de cuadros por segundo a 120fps sostenidos.',
-      codeSnippet: `// Señal derivada reactiva
-readonly filteredProjects = computed(() => {
-  return this.projects().filter(p => p.stars > 100);
-});`,
-      category: 'Architecture',
-      tags: ['Angular', 'TypeScript', 'Performance'],
-      likes: 142,
-      commentsCount: 28,
-      views: '1.8k'
-    },
-    {
-      id: 2,
-      authorName: 'Elena Rostova',
-      authorHandle: '@erostova_ui',
-      authorAvatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=150',
-      badgeRole: 'UI/UX Lead',
-      timeAgo: 'Hace 3 horas',
-      title: 'Kefex Design System v2.0: Componentes de Cristal Neón',
-      content: 'Presentamos la nueva librería de diseño para desarrolladores. Transparencia de capa adaptable, sombras volumétricas y compatibilidad nativa con CSS Container Queries.',
-      category: 'Design Systems',
-      tags: ['Design', 'CSSGrid', 'UIUX'],
-      likes: 310,
-      commentsCount: 45,
-      views: '3.4k'
-    }
-  ]);
+  visiblePublications = computed(() => {
+    const posts = this.publications();
+    if (this.selectedTab() === 'following') return [];
+    if (this.selectedTab() === 'trending') return [...posts].sort((a, b) => b.likes - a.likes);
+    return posts;
+  });
 
-  topCreators = signal<Creator[]>([
-    { id: 1, name: 'Andrés Cortés', role: 'Desarrollador KEFEX', avatar: 'assets/Kefex-ph.png', projectsCount: 24, isFollowing: false },
-    { id: 2, name: 'Over Exleyder', role: 'Desarrollador KEFEX', avatar: 'assets/Kefex-ph.png', projectsCount: 18, isFollowing: false },
-    { id: 3, name: 'Kevin Urrego', role: 'Desarrollador KEFEX', avatar: 'assets/Kefex-ph.png', projectsCount: 16, isFollowing: false }
-  ]);
+  constructor() {
+    if (this.authService.isAuthenticated()) this.favoritosService.cargarFavoritos();
+    this.publicacionesService.obtenerPublicaciones({ limit: 20 }).subscribe((items) => {
+      this.publications.set(items.map((item) => ({
+        id: item.id,
+        authorName: item.autor.nombre,
+        authorHandle: item.autor.username ? `@${item.autor.username}` : '@comunidad_kefex',
+        authorAvatar: item.autor.avatarUrl || 'assets/Kefex-ph.png',
+        badgeRole: 'Miembro KEFEX',
+        timeAgo: item.fechaCreacion ? new Date(item.fechaCreacion).toLocaleDateString('es-CO') : 'Reciente',
+        title: item.titulo,
+        content: item.descripcion,
+        category: item.categoria,
+        tags: [item.categoria.replace(/\s+/g, ''), 'KEFEX'],
+        likes: item.likesCount || 0,
+        commentsCount: 0,
+        views: '—',
+      })));
+    });
+  }
 
-  trendingTopics = ['#Angular18', '#WebAssembly', '#Tailwind4', '#RustDev', '#AIUI'];
+
+  trendingTopics = ['#CompraSegura', '#ReseñasReales', '#Marketplace', '#Tecnología', '#ExperienciaDeCompra'];
 
   setTab(tab: 'explore' | 'following' | 'trending'): void {
     this.selectedTab.set(tab);
   }
 
-  toggleLike(post: Publication): void {
-    post.isLiked = !post.isLiked;
-    post.likes += post.isLiked ? 1 : -1;
+  toggleBookmark(post: Publication): void {
+    if (!this.authService.isAuthenticated()) { this.feedbackMessage.set('Inicia sesión para guardar favoritos.'); return; }
+    const publication = this.publicacionesService.publicaciones().find(item => String(item.id) === String(post.id));
+    if (!publication) { this.feedbackMessage.set('Esta tarjeta de demostración no se puede guardar.'); return; }
+    const wasSaved = this.favoritosService.favoritos().some(item => String(item.id) === String(post.id));
+    this.favoritosService.toggleFavorito(publication).subscribe({ next: () => { post.isBookmarked = !wasSaved; this.feedbackMessage.set(wasSaved ? 'Publicación retirada de favoritos.' : 'Publicación guardada en favoritos.'); }, error: () => this.feedbackMessage.set('No fue posible actualizar favoritos en el servidor.') });
   }
 
-  toggleFollow(creator: Creator): void {
-    creator.isFollowing = !creator.isFollowing;
-  }
 }

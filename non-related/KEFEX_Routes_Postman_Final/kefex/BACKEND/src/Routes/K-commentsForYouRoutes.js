@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import controllerComents from '../Controller/K-commentsForYouController.js';
+import { autenticar } from '../middleware/auth.middleware.js';
+const routerComments = Router();
+routerComments.get('/', controllerComents.readAllComments);
+routerComments.get('/:id', controllerComents.readCommentByID);
+routerComments.post('/', autenticar, controllerComents.createComment);
+routerComments.put('/:id', autenticar, controllerComents.updateComment);
+routerComments.delete('/:id', autenticar, controllerComents.deleteCommentByID);
+export default routerComments;

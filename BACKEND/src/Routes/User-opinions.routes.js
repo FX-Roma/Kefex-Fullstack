@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import opinionForumController from '../Controller/User-opinions.controller.js';
+import { autenticar, autorizarRoles } from '../middleware/auth.middleware.js';
+const routerOpinions = Router();
+routerOpinions.get('/', opinionForumController.getAllOpinions);
+routerOpinions.get('/:id', opinionForumController.getOpinionById);
+routerOpinions.post('/', autenticar, opinionForumController.createOpinion);
+routerOpinions.put('/:id', autenticar, opinionForumController.updateOpinion);
+routerOpinions.delete('/:id', autenticar, autorizarRoles('admin'), opinionForumController.deleteOpinion);
+export default routerOpinions;
