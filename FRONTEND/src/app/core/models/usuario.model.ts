@@ -1,12 +1,16 @@
+/** Safe API projection of the Mongoose Usuario model. Password hashes are never exposed to clients. */
+export type UserRole = 'user' | 'admin';
+export type UserStatus = 'activo' | 'inactivo';
+
 export interface Usuario {
-  id: string | number;
-  nombre: string;
-  username: string;
-  email?: string; // Se agrega el signo '?' para hacerlo opcional
-  avatarUrl?: string;
-  profesion?: string;
-  biografia?: string;
-  seguidoresCount?: number;
-  siguiendoCount?: number;
-  esDisenador?: boolean;
+  _id?: string;
+  id?: string;
+  name: string;
+  email: string;
+  rol: UserRole;
+  avatar: string;
+  biografia: string;
+  estado: UserStatus;
+  createdAt?: string;
+  updatedAt?: string;
 }

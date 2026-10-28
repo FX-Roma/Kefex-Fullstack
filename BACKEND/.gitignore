@@ -1,5 +1,8 @@
-
 node_modules/
-.postman/
-postman/
-.node_modules
+.env
+.env.*
+!.env.example
+coverage/
+logs/
+.DS_Store
+uploads/

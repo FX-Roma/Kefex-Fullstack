@@ -1,0 +1,50 @@
+<main class="page-shell admin-page">
+  <header class="page-heading">
+    <div><span class="eyebrow">Control center / KEFEX</span><h1>Panel de <span class="text-gradient">administración</span></h1><p>Supervisa usuarios, contenido y disponibilidad de la API desde un solo espacio.</p></div>
+    <span class="status-pill">Consola protegida</span>
+  </header>
+  @if (error()) { <div class="admin-alert" role="alert">{{ error() }} <button type="button" (click)="loadUsers(); loadModeration(); checkServer()">Reintentar</button></div> }
+  @if (notice()) { <div class="admin-notice" role="status">{{ notice() }}</div> }
+  <nav class="admin-tabs" aria-label="Secciones de administración">
+    <button [class.active]="selectedTab() === 'overview'" (click)="selectTab('overview')">Resumen</button>
+    <button [class.active]="selectedTab() === 'users'" (click)="selectTab('users')">Usuarios</button>
+    <button [class.active]="selectedTab() === 'moderation'" (click)="selectTab('moderation')">Moderación</button>
+  </nav>
+
+  @if (selectedTab() === 'overview') {
+    <section class="metric-grid">
+      <article class="metric-card surface"><span>Usuarios registrados</span><strong>{{ loading() ? '—' : users().length }}</strong><small>Directorio protegido</small></article>
+      <article class="metric-card surface"><span>Administradores</span><strong>{{ loading() ? '—' : admins }}</strong><small>Privilegios elevados</small></article>
+      <article class="metric-card surface"><span>Publicaciones</span><strong>{{ moderationLoading() ? '—' : publications().length }}</strong><small>Contenido comunitario</small></article>
+      <article class="metric-card surface"><span>Estado de API</span><strong class="server-state" [class.online]="serverStatus() === 'online'" [class.offline]="serverStatus() === 'offline'">{{ serverStatus() === 'checking' ? 'Verificando' : serverStatus() === 'online' ? 'Operativa' : 'Sin conexión' }}</strong><small>GET /api/health</small></article>
+    </section>
+    <section class="surface admin-note"><span class="eyebrow">Acceso administrativo</span><h2>Operación con trazabilidad</h2><p>Las acciones destructivas solicitan confirmación. Los cambios de rol no se exponen desde el formulario: el alta pública siempre crea usuarios estándar y la elevación de privilegios debe realizarse mediante un procedimiento confiable.</p><button class="btn-secondary" (click)="selectTab('users')">Gestionar usuarios</button><button class="btn-secondary" (click)="selectTab('moderation')">Revisar contenido</button></section>
+  } @else if (selectedTab() === 'users') {
+    <section class="surface user-table-wrap">
+      <div class="table-heading"><div><h2>Directorio de usuarios</h2><p>Los datos sensibles, como hashes de contraseña, nunca se devuelven al cliente.</p></div><div class="table-actions"><button class="btn-secondary" (click)="loadUsers()">Actualizar</button><button class="btn-primary" (click)="toggleCreateUser()">{{ showCreateUser() ? 'Cancelar' : '＋ Crear usuario' }}</button></div></div>
+      @if (showCreateUser()) {
+        <form class="create-user-form" (ngSubmit)="createUser()"><div class="field"><label for="new-name">Nombre</label><input id="new-name" name="name" [(ngModel)]="newUser.name" required maxlength="80" /></div><div class="field"><label for="new-email">Correo</label><input id="new-email" name="email" type="email" [(ngModel)]="newUser.email" required /></div><div class="field"><label for="new-password">Contraseña inicial</label><input id="new-password" name="password" type="password" [(ngModel)]="newUser.password" required minlength="8" /></div><button class="btn-primary" type="submit">Crear usuario estándar</button></form>
+      }
+      @if (loading()) { <div class="empty-state">Cargando usuarios…</div> } @else if (users().length === 0) { <div class="empty-state"><strong>No hay usuarios para mostrar</strong>Verifica la conexión y los permisos.</div> } @else {
+        <div class="table-scroll"><table><thead><tr><th>Usuario</th><th>Correo</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
+          @for (user of users(); track user._id || user.id || user.email) {
+            <tr><td><strong>{{ user.name }}</strong></td><td>{{ user.email }}</td><td><span class="role-chip" [class.admin-role]="user.rol === 'admin'">{{ user.rol }}</span></td><td>{{ user.estado || 'activo' }}</td><td><div class="row-actions"><button class="btn-ghost" [disabled]="isCurrentUser(user)" [title]="isCurrentUser(user) ? 'No puedes desactivar tu propia cuenta' : 'Cambiar estado'" (click)="toggleUserStatus(user)">{{ user.estado === 'inactivo' ? 'Activar' : 'Desactivar' }}</button><button class="btn-ghost danger" [disabled]="isCurrentUser(user)" [title]="isCurrentUser(user) ? 'No puedes eliminar tu propia cuenta' : 'Eliminar usuario'" (click)="deleteUser(user)">Eliminar</button></div></td></tr>
+          }
+        </tbody></table></div>
+      }
+    </section>
+  } @else {
+    <section class="moderation-grid">
+      <div class="surface moderation-panel"><div class="table-heading"><div><h2>Publicaciones</h2><p>{{ publications().length }} elementos encontrados</p></div><button class="btn-secondary" (click)="loadModeration()">Actualizar</button></div>
+        @if (moderationLoading()) { <div class="empty-state">Cargando publicaciones…</div> } @else if (publications().length === 0) { <div class="empty-state">No hay publicaciones para moderar.</div> } @else {
+          @for (publication of publications(); track publication._id) { <article class="moderation-item"><div><strong>{{ publication.contenido }}</strong><p>{{ publication.categoria }} · {{ publication.autor?.name || 'Miembro KEFEX' }}</p></div><button class="btn-ghost danger" (click)="deletePublication(publication)">Eliminar</button></article> }
+        }
+      </div>
+      <div class="surface moderation-panel"><div class="table-heading"><div><h2>Comentarios</h2><p>{{ comments().length }} elementos encontrados</p></div></div>
+        @if (moderationLoading()) { <div class="empty-state">Cargando comentarios…</div> } @else if (comments().length === 0) { <div class="empty-state">No hay comentarios para moderar.</div> } @else {
+          @for (comment of comments(); track comment._id) { <article class="moderation-item"><div><strong>{{ comment.texto }}</strong><p>{{ comment.autor?.nombre || 'Miembro KEFEX' }}</p></div><button class="btn-ghost danger" (click)="deleteComment(comment)">Eliminar</button></article> }
+        }
+      </div>
+    </section>
+  }
+</main>

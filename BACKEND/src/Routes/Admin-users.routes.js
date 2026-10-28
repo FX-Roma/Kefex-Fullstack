@@ -1,0 +1,11 @@
+import express from 'express';
+import { crearUsuario, crearAdministrador, obtenerUsuarios, obtenerUsuarioPorId, actualizarUsuario, eliminarUsuario } from '../Controller/Admin-users.controller.js';
+import { autenticar, autorizarRoles } from '../middleware/auth.middleware.js';
+const router = express.Router();
+router.post('/', autenticar, autorizarRoles('admin'), crearUsuario);
+router.post('/admin', autenticar, autorizarRoles('admin'), crearAdministrador);
+router.get('/', autenticar, autorizarRoles('admin'), obtenerUsuarios);
+router.get('/:id', autenticar, autorizarRoles('admin'), obtenerUsuarioPorId);
+router.put('/:id', autenticar, autorizarRoles('admin'), actualizarUsuario);
+router.delete('/:id', autenticar, autorizarRoles('admin'), eliminarUsuario);
+export default router;

@@ -1,0 +1,42 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="card-header">
+      <div class="brand-logo">K</div>
+      <h2>{{ isAdminLogin ? 'Acceso administrativo' : 'Iniciar Sesión en KEFEX' }}</h2>
+      <p>{{ isAdminLogin ? 'Ingresa con una cuenta autorizada para administrar KEFEX.' : 'Accede a tu cuenta para evaluar e-commerce y compartir tus opiniones.' }}</p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="alert-error">
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <form [formGroup]="credentialsForm" (ngSubmit)="handleSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">Correo Electrónico</label>
+        <input 
+          id="username"
+          type="email" 
+          placeholder="tu@correo.com" 
+          formControlName="username" 
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input 
+          id="password"
+          type="password" 
+          placeholder="••••••••" 
+          formControlName="password" 
+        />
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="credentialsForm.invalid || isSubmitting">
+        {{ isSubmitting ? 'Validando acceso…' : 'Ingresar a KEFEX' }}
+      </button>
+    </form>
+    @if (!isAdminLogin) { <p class="auth-switch">¿Nuevo en KEFEX? <a routerLink="/registro">Crea tu cuenta</a></p> }
+  </div>
+</div>

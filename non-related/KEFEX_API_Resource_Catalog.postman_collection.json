@@ -1,0 +1,1897 @@
+{
+  "info": {
+    "_postman_id": "858fb883-420f-48df-9cb5-ed153934716a",
+    "name": "KEFEX API — Resource-based CRUD",
+    "description": "Organized by backend resource and matching descriptive file names. Uses exact mounts from server.js. For token-free LOCAL development only, enable POSTMAN_AUTH_BYPASS=true in backend and use X-Dev-Role on protected requests. Otherwise add a valid Bearer token.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 — Health & Server",
+      "description": "Public operational endpoints.",
+      "item": [
+        {
+          "name": "API root",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": []
+            },
+            "description": "Confirms the API process is responding."
+          },
+          "response": []
+        },
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            },
+            "description": "Process health only; it does not independently verify MongoDB state."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth — User",
+      "description": "Public registration and login; public registration always creates role user.",
+      "item": [
+        {
+          "name": "Register user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/user/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "user",
+                "register"
+              ]
+            },
+            "description": "Creates a normal user. Password minimum 8 characters.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{userName}}\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register user (English alias)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Alias for registration.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{userName}}\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/user/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "user",
+                "login"
+              ]
+            },
+            "description": "Login body expects username (email) and password.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login user (English alias)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Returns token in data field when credentials are valid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth — Admin",
+      "description": "Admin login accepts only existing accounts whose MongoDB role is admin. There is intentionally no public admin registration.",
+      "item": [
+        {
+          "name": "Login admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/admin/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "admin",
+                "login"
+              ]
+            },
+            "description": "Credentials must belong to an active admin account."
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"username\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profile — Current User",
+      "description": "Mounted at /api/usuario. Requires real JWT unless local Postman bypass is enabled.",
+      "item": [
+        {
+          "name": "Read my profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuario/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuario",
+                "profile"
+              ]
+            },
+            "description": "Returns profile for authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Update my profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuario/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuario",
+                "profile"
+              ]
+            },
+            "description": "Editable fields: name, avatar, biografia.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated KEFEX User\",\n  \"avatar\": \"\",\n  \"biografia\": \"Updated profile\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin-users.controller — CRUD Users",
+      "description": "Mounted at /api/usuarios. All requests require admin role. This CRUD creates normal users only; role promotion is intentionally excluded.",
+      "item": [
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            },
+            "description": "Creates a normal user from the admin interface.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New KEFEX User\",\n  \"email\": \"new-user@example.com\",\n  \"password\": \"ChangeMe123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create administrator",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only; requires POSTMAN_AUTH_BYPASS=true."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/admin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "admin"
+              ]
+            },
+            "description": "Admin-only endpoint. Password must be at least 12 characters. The first admin must be provisioned securely outside this endpoint."
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"New KEFEX Admin\",\n  \"email\": \"new-admin@example.com\",\n  \"password\": \"ChangeThisAdmin123!\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read all users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            },
+            "description": "Returns users without password hashes."
+          },
+          "response": []
+        },
+        {
+          "name": "Read user by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "{{userId}}"
+              ]
+            },
+            "description": "Replace userId with a real MongoDB ObjectId."
+          },
+          "response": []
+        },
+        {
+          "name": "Update user",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "{{userId}}"
+              ]
+            },
+            "description": "Allowed fields: name, email, password, avatar, biografia, estado.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated KEFEX User\",\n  \"biografia\": \"Updated from Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "{{userId}}"
+              ]
+            },
+            "description": "Destructive. Use only a test account."
+          },
+          "response": []
+        },
+        {
+          "name": "Read all users (profile endpoint)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuario/admin/all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuario",
+                "admin",
+                "all"
+              ]
+            },
+            "description": "Legacy admin listing endpoint."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User-publications.controller — CRUD Publications",
+      "description": "Mounted at /api/publicaciones. Reads are public; create/update require user or admin; deletion is currently admin-only at route level.",
+      "item": [
+        {
+          "name": "Create publication",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/publicaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publicaciones"
+              ]
+            },
+            "description": "Requires multipart upload for image or JSON body with contenido/categoria.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contenido\": \"Postman test publication\",\n  \"categoria\": \"technology\",\n  \"multimedia\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read all publications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/publicaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publicaciones"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Maximum 50"
+                },
+                {
+                  "key": "categoria",
+                  "value": "technology",
+                  "description": "Optional category"
+                },
+                {
+                  "key": "q",
+                  "value": "Postman",
+                  "description": "Optional content search"
+                }
+              ]
+            },
+            "description": "Supports page, limit, categoria and q."
+          },
+          "response": []
+        },
+        {
+          "name": "Read publication by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/publicaciones/{{publicationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publicaciones",
+                "{{publicationId}}"
+              ]
+            },
+            "description": "Replace publicationId with a real ObjectId."
+          },
+          "response": []
+        },
+        {
+          "name": "Update publication",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/publicaciones/{{publicationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publicaciones",
+                "{{publicationId}}"
+              ]
+            },
+            "description": "Owner or admin only.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contenido\": \"Updated publication content\",\n  \"categoria\": \"technology\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete publication",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/publicaciones/{{publicationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publicaciones",
+                "{{publicationId}}"
+              ]
+            },
+            "description": "Admin-only by route middleware."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin-products.controller — CRUD Products",
+      "description": "Mounted at /api/productos. Reads public; create/update/delete require admin.",
+      "item": [
+        {
+          "name": "Create product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "productos"
+              ]
+            },
+            "description": "Required fields: nombre, descripcion, precio, categoria.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Test product\",\n  \"descripcion\": \"Product created from Postman\",\n  \"precio\": 199.99,\n  \"categoria\": \"technology\",\n  \"imagen\": \"\",\n  \"stock\": 10,\n  \"valoracion\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read all products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "productos"
+              ]
+            },
+            "description": "Returns product list."
+          },
+          "response": []
+        },
+        {
+          "name": "Read product by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "productos",
+                "{{productId}}"
+              ]
+            },
+            "description": "Replace productId with a real ObjectId."
+          },
+          "response": []
+        },
+        {
+          "name": "Update product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "productos",
+                "{{productId}}"
+              ]
+            },
+            "description": "Admin-only.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Updated test product\",\n  \"descripcion\": \"Updated from Postman\",\n  \"precio\": 149.99,\n  \"categoria\": \"technology\",\n  \"stock\": 8\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete product",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "productos",
+                "{{productId}}"
+              ]
+            },
+            "description": "Destructive; admin-only."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin-sites.controller — CRUD Sites",
+      "description": "Mounted at /api/sites. Reads public; mutations admin-only.",
+      "item": [
+        {
+          "name": "Create site",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/sites",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sites"
+              ]
+            },
+            "description": "Use required name and officialUrl fields.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Store\",\n  \"officialUrl\": \"https://example.com\",\n  \"logo\": \"\",\n  \"description\": \"Test site\",\n  \"category\": \"ecommerce\",\n  \"isFeaturedSite\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read all sites",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sites",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sites"
+              ]
+            },
+            "description": "Returns site list."
+          },
+          "response": []
+        },
+        {
+          "name": "Read featured site",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sites/featured",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sites",
+                "featured"
+              ]
+            },
+            "description": "Returns featured site selected by controller."
+          },
+          "response": []
+        },
+        {
+          "name": "Read site by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sites/{{siteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sites",
+                "{{siteId}}"
+              ]
+            },
+            "description": "Replace siteId with a real ObjectId."
+          },
+          "response": []
+        },
+        {
+          "name": "Update site",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/sites/{{siteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sites",
+                "{{siteId}}"
+              ]
+            },
+            "description": "Admin-only.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated site description\",\n  \"isFeaturedSite\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete site",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/sites/{{siteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sites",
+                "{{siteId}}"
+              ]
+            },
+            "description": "Destructive; admin-only."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User-opinions.controller — CRUD Opinions",
+      "description": "Mounted at /api/opinions. Create/update require authentication; delete is admin-only.",
+      "item": [
+        {
+          "name": "Create opinion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/opinions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "opinions"
+              ]
+            },
+            "description": "Required fields title and opinion; schema category defaults to ecommerce.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman opinion test\",\n  \"opinion\": \"Opinion content created from Postman\",\n  \"category\": \"technology\",\n  \"score\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read all opinions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/opinions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "opinions"
+              ]
+            },
+            "description": "Returns forum opinions."
+          },
+          "response": []
+        },
+        {
+          "name": "Read opinion by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/opinions/{{opinionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "opinions",
+                "{{opinionId}}"
+              ]
+            },
+            "description": "Replace opinionId with a real ObjectId."
+          },
+          "response": []
+        },
+        {
+          "name": "Update opinion",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/opinions/{{opinionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "opinions",
+                "{{opinionId}}"
+              ]
+            },
+            "description": "Owner/admin rules are enforced by controller if implemented.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated opinion\",\n  \"opinion\": \"Updated opinion content\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete opinion",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "admin",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/opinions/{{opinionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "opinions",
+                "{{opinionId}}"
+              ]
+            },
+            "description": "Admin-only by route middleware."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User-comments.controller — CRUD Opinion Comments",
+      "description": "Mounted at /api/comments. Create/update/delete require authentication and ownership/admin checks.",
+      "item": [
+        {
+          "name": "Create comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments"
+              ]
+            },
+            "description": "Requires an existing opinionId and texto.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"opinionId\": \"{{opinionId}}\",\n  \"texto\": \"Comment created from Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read all comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments"
+              ],
+              "query": [
+                {
+                  "key": "opinionId",
+                  "value": "{{opinionId}}",
+                  "description": "Optional opinion ObjectId"
+                }
+              ]
+            },
+            "description": "Optional query opinionId filters comments."
+          },
+          "response": []
+        },
+        {
+          "name": "Read comment by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments/{{commentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments",
+                "{{commentId}}"
+              ]
+            },
+            "description": "Replace commentId with a real ObjectId."
+          },
+          "response": []
+        },
+        {
+          "name": "Update comment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments/{{commentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments",
+                "{{commentId}}"
+              ]
+            },
+            "description": "Owner or admin only.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"Updated comment from Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments/{{commentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments",
+                "{{commentId}}"
+              ]
+            },
+            "description": "Owner or admin only."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User-comments-for-you.controller — CRUD Feed Comments",
+      "description": "Mounted at /api/comments-for-you. Uses its own schema; see README for model/controller contract.",
+      "item": [
+        {
+          "name": "Create feed comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments-for-you",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments-for-you"
+              ]
+            },
+            "description": "Requires a valid payload matching CommentForYou model.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"Test comment\",\n  \"publicacion\": \"{{publicationId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read all feed comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments-for-you",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments-for-you"
+              ]
+            },
+            "description": "Supports optional publicacion, opinion and producto filters."
+          },
+          "response": []
+        },
+        {
+          "name": "Read feed comment by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments-for-you/{{commentForYouId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments-for-you",
+                "{{commentForYouId}}"
+              ]
+            },
+            "description": "Replace with a real ObjectId."
+          },
+          "response": []
+        },
+        {
+          "name": "Update feed comment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments-for-you/{{commentForYouId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments-for-you",
+                "{{commentForYouId}}"
+              ]
+            },
+            "description": "Owner/admin only.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"Updated feed comment\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete feed comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments-for-you/{{commentForYouId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments-for-you",
+                "{{commentForYouId}}"
+              ]
+            },
+            "description": "Owner/admin only."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User-cart.controller — Cart operations",
+      "description": "Mounted at /api/carrito. Cart is user-specific; operations require user role or admin.",
+      "item": [
+        {
+          "name": "Read cart by user ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/carrito/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "carrito",
+                "{{userId}}"
+              ]
+            },
+            "description": "Replace userId with the authenticated user ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Add item to cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/carrito/items",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "carrito",
+                "items"
+              ]
+            },
+            "description": "Requires productId and quantity as accepted by controller.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": \"{{userId}}\",\n  \"productoId\": \"{{productId}}\",\n  \"cantidad\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update cart item quantity",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/carrito/{{userId}}/items/{{cartItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "carrito",
+                "{{userId}}",
+                "items",
+                "{{cartItemId}}"
+              ]
+            },
+            "description": "Replace IDs with real values.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cantidad\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete cart item",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/carrito/{{userId}}/items/{{cartItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "carrito",
+                "{{userId}}",
+                "items",
+                "{{cartItemId}}"
+              ]
+            },
+            "description": "Destructive for one cart item."
+          },
+          "response": []
+        },
+        {
+          "name": "Clear cart",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/carrito/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "carrito",
+                "{{userId}}"
+              ]
+            },
+            "description": "Destructive: removes all cart items for this user."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User-favorites.controller — Favorites",
+      "description": "Mounted at /api/favoritos. Requires authentication; each user sees their own favorites.",
+      "item": [
+        {
+          "name": "Create favorite",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/favoritos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "favoritos"
+              ]
+            },
+            "description": "Provide publicacionId or productoId.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"publicacionId\": \"{{publicationId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read my favorites",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/favoritos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "favoritos"
+              ]
+            },
+            "description": "Returns favorites for the authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Read favorites by user ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/favoritos/usuario/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "favoritos",
+                "usuario",
+                "{{userId}}"
+              ]
+            },
+            "description": "Owner or admin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete favorite",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Dev-Role",
+                "value": "user",
+                "description": "Local bypass only. Requires POSTMAN_AUTH_BYPASS=true and matching real MongoDB account."
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/favoritos/{{favoriteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "favoritos",
+                "{{favoriteId}}"
+              ]
+            },
+            "description": "Owner or admin only."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Search.controller — Read/search endpoints",
+      "description": "Mounted at /api/search. Search is a query feature, not a CRUD resource.",
+      "item": [
+        {
+          "name": "Global search",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/search",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "laptop",
+                  "description": "Search text"
+                }
+              ]
+            },
+            "description": "Use q query parameter."
+          },
+          "response": []
+        },
+        {
+          "name": "Trending searches",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/search/trending",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "search",
+                "trending"
+              ]
+            },
+            "description": "Returns trending search data."
+          },
+          "response": []
+        },
+        {
+          "name": "Opinions by category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/search/category/technology",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "search",
+                "category",
+                "technology"
+              ]
+            },
+            "description": "Category is a path parameter."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3005"
+    },
+    {
+      "key": "userName",
+      "value": "KEFEX Postman User"
+    },
+    {
+      "key": "userId",
+      "value": "REPLACE_WITH_USER_OBJECT_ID"
+    },
+    {
+      "key": "publicationId",
+      "value": "REPLACE_WITH_PUBLICATION_OBJECT_ID"
+    },
+    {
+      "key": "productId",
+      "value": "REPLACE_WITH_PRODUCT_OBJECT_ID"
+    },
+    {
+      "key": "siteId",
+      "value": "REPLACE_WITH_SITE_OBJECT_ID"
+    },
+    {
+      "key": "opinionId",
+      "value": "REPLACE_WITH_OPINION_OBJECT_ID"
+    },
+    {
+      "key": "commentId",
+      "value": "REPLACE_WITH_COMMENT_OBJECT_ID"
+    },
+    {
+      "key": "commentForYouId",
+      "value": "REPLACE_WITH_COMMENT_ID"
+    },
+    {
+      "key": "cartItemId",
+      "value": "REPLACE_WITH_CART_ITEM_OBJECT_ID"
+    },
+    {
+      "key": "favoriteId",
+      "value": "REPLACE_WITH_FAVORITE_OBJECT_ID"
+    },
+    {
+      "key": "email",
+      "value": "developer@example.com"
+    },
+    {
+      "key": "password",
+      "value": "ChangeMe123!"
+    },
+    {
+      "key": "adminEmail",
+      "value": "admin@example.com"
+    },
+    {
+      "key": "adminPassword",
+      "value": "ChangeMe123!"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Required for startup
+
+KEFEX=mongodb+srv://<username>:<password>@<cluster>/<database>?retryWrites=true&w=majority
+JWT_SECRET=replace-with-at-least-32-random-characters
+
+
+# Optional LOCAL Postman convenience. Never enable in production.
+# When true, protected requests can omit Authorization: Bearer <token>.
+# Use X-Dev-Role: user (default) or X-Dev-Role: admin in Postman.
+# The corresponding real, active MongoDB accounts must exist and have the stated roles.
+                               

@@ -9,28 +9,28 @@
       <div class="designer-card">
 
         <img
-          [src]="designer.avatarUrl || 'assets/Kefex-ph.png'"
-          [alt]="designer.nombre"
+          [src]="designer.avatar || 'assets/Kefex-ph.png'"
+          [alt]="designer.name"
           class="designer-avatar"
           (error)="$any($event.target).src='assets/Kefex-ph.png'"
         />
 
-        <h3>{{ designer.nombre }}</h3>
+        <h3>{{ designer.name }}</h3>
 
         <p class="designer-handle">
-          &#64;{{ designer.username }}
+          &#64;{{ designer.email }}
         </p>
 
         <p class="designer-profesion">
-          {{ designer.profesion }}
+          {{ designer.biografia || designer.rol }}
         </p>
 
         <div class="stats-row">
-          <span>👥 {{ designer.seguidoresCount }} Seguidores</span>
+          <span>Estado: {{ designer.estado }}</span>
         </div>
 
         <button class="btn-follow">
-          Seguir Creador
+          Ver perfil
         </button>
 
       </div>

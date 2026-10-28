@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { crearProducto, obtenerProductos, obtenerProductoPorId, actualizarProducto, eliminarProducto } from '../Controller/E-productStoreController.js';
+import { autenticar, autorizarRoles } from '../middleware/auth.middleware.js';
+const routerProduct = Router();
+routerProduct.get('/', obtenerProductos);
+routerProduct.get('/:id', obtenerProductoPorId);
+routerProduct.post('/', autenticar, autorizarRoles('admin'), crearProducto);
+routerProduct.put('/:id', autenticar, autorizarRoles('admin'), actualizarProducto);
+routerProduct.delete('/:id', autenticar, autorizarRoles('admin'), eliminarProducto);
+export default routerProduct;
