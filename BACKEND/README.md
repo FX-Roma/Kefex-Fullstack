@@ -5,7 +5,7 @@ Node.js + Express + Mongoose API. The backend uses ES modules and connects to Mo
 ## Quick start
 
 1. Install dependencies: `npm ci`.
-2. Copy `.env.example` to `.env` and set `KEFEX` and a random `JWT_SECRET` (at least 32 characters).
+2. Copy `.env.example` to `.env` and set `KEFEX` and a random `JWT_SECRET` (at least 32 characters). Never share or commit `.env`.
 3. Start the API: `npm run dev` or `npm start`.
 4. API base URL defaults to `http://localhost:3005`; `GET /api/health` confirms the process is responding but does not independently prove database health.
 5. Run `npm run check` for JavaScript syntax and relative-import checks.
@@ -17,7 +17,9 @@ Authentication remains enforced by default. For local team development, a narrow
 - Set `NODE_ENV=development`.
 - Set `POSTMAN_AUTH_BYPASS=true`.
 - Set `POSTMAN_DEV_USER_EMAIL` and `POSTMAN_DEV_ADMIN_EMAIL` to existing, active MongoDB accounts with matching `user` and `admin` roles.
-- In Postman protected requests, send `X-Dev-Role: user` or `X-Dev-Role: admin`. If omitted, the bypass defaults to `user`.
+- In Postman protected requests, send `X-Dev-Role: user` or `X-Dev-Role: admin`. The bypass is activated only when this header is explicitly present.
+- Requests from Angular that do not send `X-Dev-Role` continue to authenticate with their normal Bearer JWT, even while the local bypass is enabled.
+- Configure different active MongoDB accounts for the user and admin email variables.
 - Restart the API after changing environment variables.
 
 The middleware looks up the configured account in MongoDB and assigns its real ID and role to the request, so user-owned resources continue to behave consistently. This bypass is rejected when `NODE_ENV=production`. Do not enable it on a shared/staging/production server. If the bypass is disabled, use the normal login endpoint and a valid JWT.
