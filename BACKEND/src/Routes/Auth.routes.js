@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { registro, iniciarSesion, iniciarSesionUsuario, iniciarSesionAdmin, forgotPassword } from '../Controller/Auth.controller.js';
+import { autenticar } from '../middleware/auth.middleware.js';
+import { registro, iniciarSesion, iniciarSesionUsuario, iniciarSesionAdmin, forgotPassword, cambiarPassword } from '../Controller/Auth.controller.js';
 const router = Router();
 // Canonical, role-specific auth routes.
 router.post('/user/register', registro);
@@ -12,5 +13,6 @@ router.post('/register', registro);
 router.post('/login', iniciarSesion);
 // Recuperar contraseña
 router.post('/forgot-password', forgotPassword);
-
+// Cambiar contraseña del usuario autenticado
+router.put('/change-password', autenticar, cambiarPassword);
 export default router;
