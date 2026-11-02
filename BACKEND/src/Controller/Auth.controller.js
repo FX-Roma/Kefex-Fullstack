@@ -125,12 +125,7 @@ export const forgotPassword = async (req, res) => {
     const user = await Usuario.findOne({
       email: email.trim().toLowerCase()
     });
-    console.log('¿Usuario encontrado?', !!user);
-
-    // Diagnóstico temporal: mostrar los correos registrados
-    const usuarios = await Usuario.find({}, 'email');
-    console.log('Correos registrados:', usuarios.map(u => u.email));
-
+  
     // 4. Responder sin revelar si el correo existe
     if (!user) {
       return res.status(200).json({
@@ -182,6 +177,72 @@ return res.status(200).json({
     return res.status(500).json({
       result: 'mal',
       message: 'Error interno en el servidor.'
+    });
+  }
+};
+
+// Cambiar contraseña del usuario autenticado
+export const cambiarPassword = async (req, res) => {
+  try {
+    // 1. Recibir las contraseñas
+    const { passwordActual, passwordNueva } = req.body;
+
+    // 2. Validar los datos recibidos
+    if (
+      typeof passwordActual !== 'string' ||
+      typeof passwordNueva !== 'string' ||
+      passwordNueva.length < 8
+    ) {
+      return res.status(400).json({
+        result: 'mal',
+        message: 'Debes ingresar la contraseña actual y una nueva de mínimo 8 caracteres.'
+      });
+    }
+
+    // 3. Buscar al usuario autenticado
+    const user = await Usuario.findById(req.auth.id).select('+password');
+
+    if (!user) {
+      return res.status(404).json({
+        result: 'mal',
+        message: 'Usuario no encontrado.'
+      });
+    }
+
+    // 4. Comprobar la contraseña actual
+    const esValida = await bcrypt.compare(passwordActual, user.password);
+
+    if (!esValida) {
+      return res.status(401).json({
+        result: 'mal',
+        message: 'La contraseña actual es incorrecta.'
+      });
+    }
+
+    // 5. Evitar reutilizar la misma contraseña
+    if (await bcrypt.compare(passwordNueva, user.password)) {
+      return res.status(400).json({
+        result: 'mal',
+        message: 'La nueva contraseña debe ser diferente a la actual.'
+      });
+    }
+
+    // 6. Cifrar y guardar la nueva contraseña
+    user.password = await bcrypt.hash(passwordNueva, 12);
+    await user.save();
+
+    // 7. Confirmar el cambio
+    return res.status(200).json({
+      result: 'fine',
+      message: 'Contraseña actualizada correctamente.'
+    });
+
+  } catch (error) {
+    console.error('Error al cambiar contraseña:', error);
+
+    return res.status(500).json({
+      result: 'mal',
+      message: 'No fue posible cambiar la contraseña.'
     });
   }
 };
