@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import mongoose from 'mongoose';
 import servidorKefex from './server.js';
 import { connectDatabase } from './connection.js';
 
@@ -18,3 +19,4 @@ try {
   console.error(error instanceof Error ? error.message : 'Error desconocido');
   process.exit(1);
 }
+
