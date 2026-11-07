@@ -3,7 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-@Component({ selector: 'app-registro', standalone: true, imports: [CommonModule, ReactiveFormsModule, RouterLink], templateUrl: './registro.html', styleUrls: ['./registro.css'] })
+@Component(
+  { selector: 'app-registro', 
+    standalone: true, imports: [CommonModule, ReactiveFormsModule, RouterLink], 
+    templateUrl: './registro.html', 
+    styleUrls: ['./registro.css'] })
 export class RegistroComponent {
   private readonly auth = inject(AuthService); private readonly router = inject(Router);
   errorMessage = ''; successMessage = ''; isSubmitting = false;
