@@ -1,0 +1,14 @@
+<form class="composer" (ngSubmit)="publish()">
+  <label for="publication-content">Comparte una experiencia real</label>
+  <textarea id="publication-content" name="content" [ngModel]="content()" (ngModelChange)="content.set($event)" maxlength="3000" minlength="10" required placeholder="¿Qué producto compraste? ¿Cómo fue tu experiencia? ¿Qué debería saber la comunidad?" rows="4"></textarea>
+  <div class="composer-controls">
+    <select aria-label="Categoría de publicación" [ngModel]="category()" (ngModelChange)="category.set($event)" name="category">
+      <option>E-commerce</option><option>Tecnología</option><option>Gaming</option><option>Diseño</option><option>Hogar</option><option>Moda</option><option>General</option>
+    </select>
+    <label class="upload-control">＋ Añadir imagen<input type="file" accept="image/jpeg,image/png,image/webp" (change)="onImageSelected($event)"></label>
+    <button type="submit" [disabled]="submitting()">{{ submitting() ? 'Publicando…' : 'Publicar experiencia' }}</button>
+  </div>
+  @if(previewUrl()){<div class="image-preview"><img [src]="previewUrl()" alt="Vista previa de la imagen seleccionada"><button type="button" (click)="removeImage()">Quitar imagen</button></div>}
+  @if(feedback()){<p class="feedback" role="status">{{ feedback() }}</p>}
+  <small>JPG, PNG o WEBP · máximo 5 MB · No compartas datos personales ni información sensible.</small>
+</form>

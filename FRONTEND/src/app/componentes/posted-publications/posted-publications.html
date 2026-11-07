@@ -1,0 +1,103 @@
+<section class="publications-page" aria-labelledby="publications-title">
+  <header class="page-header">
+    <div>
+      <span class="eyebrow"><span class="status-dot"></span> COMUNIDAD KEFEX</span>
+      <h1 id="publications-title">Mis publicaciones</h1>
+      <p>Consulta las publicaciones de la comunidad por categoría.</p>
+    </div>
+    <button class="refresh-button" type="button" (click)="cargarSecciones()" [disabled]="isLoading()">
+      <span aria-hidden="true">↻</span> Actualizar
+    </button>
+  </header>
+
+  @if (isLoading()) {
+    <div class="state-panel" role="status" aria-live="polite">
+      <span class="loading-indicator"></span>
+      <p>Cargando publicaciones…</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="state-panel state-error" role="alert">
+      <h2>No se pudieron cargar las publicaciones</h2>
+      <p>{{ errorMessage() }}</p>
+      <button class="refresh-button" type="button" (click)="cargarSecciones()">Reintentar</button>
+    </div>
+  } @else {
+    <section class="publication-section" aria-labelledby="eco-title">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">CATEGORÍA</span>
+          <h2 id="eco-title">Ecológicos</h2>
+        </div>
+        <span class="count-pill">{{ publicacionesEcologicos().length }} publicaciones</span>
+      </div>
+
+      @if (publicacionesEcologicos().length) {
+        <div class="publication-grid">
+          @for (publication of publicacionesEcologicos(); track publication.id) {
+            <article class="publication-card">
+              @if (publication.imagenUrl) {
+                <img class="publication-image" [src]="publication.imagenUrl" [alt]="publication.titulo" loading="lazy" />
+              } @else {
+                <div class="image-placeholder" aria-label="Publicación sin imagen"><span>KEFEX</span></div>
+              }
+              <div class="card-content">
+                <div class="card-meta">
+                  <span class="category-tag">{{ publication.categoria }}</span>
+                  <time>{{ publication.fechaCreacion | date:'mediumDate' }}</time>
+                </div>
+                <h3>{{ publication.titulo }}</h3>
+                <p class="description">{{ publication.descripcion }}</p>
+                <div class="card-footer">
+                  <span class="author">{{ publication.autor.nombre }}</span>
+                  <span class="likes">♥ {{ publication.likesCount }}</span>
+                </div>
+                <button class="text-action" type="button" (click)="abrirPublicacion(publication)">Ver publicación <span aria-hidden="true">→</span></button>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <p class="empty-state">Todavía no hay publicaciones en esta categoría.</p>
+      }
+    </section>
+
+    <section class="publication-section" aria-labelledby="umbrella-title">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">CATEGORÍA</span>
+          <h2 id="umbrella-title">Sombrillas</h2>
+        </div>
+        <span class="count-pill">{{ publicacionesSombrillas().length }} publicaciones</span>
+      </div>
+
+      @if (publicacionesSombrillas().length) {
+        <div class="publication-grid">
+          @for (publication of publicacionesSombrillas(); track publication.id) {
+            <article class="publication-card">
+              @if (publication.imagenUrl) {
+                <img class="publication-image" [src]="publication.imagenUrl" [alt]="publication.titulo" loading="lazy" />
+              } @else {
+                <div class="image-placeholder" aria-label="Publicación sin imagen"><span>KEFEX</span></div>
+              }
+              <div class="card-content">
+                <div class="card-meta">
+                  <span class="category-tag">{{ publication.categoria }}</span>
+                  <time>{{ publication.fechaCreacion | date:'mediumDate' }}</time>
+                </div>
+                <h3>{{ publication.titulo }}</h3>
+                <p class="description">{{ publication.descripcion }}</p>
+                <div class="card-footer">
+                  <span class="author">{{ publication.autor.nombre }}</span>
+                  <span class="likes">♥ {{ publication.likesCount }}</span>
+                </div>
+                <button class="text-action" type="button" (click)="abrirPublicacion(publication)">Ver publicación <span aria-hidden="true">→</span></button>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <p class="empty-state">Todavía no hay publicaciones en esta categoría.</p>
+      }
+    </section>
+  }
+</section>

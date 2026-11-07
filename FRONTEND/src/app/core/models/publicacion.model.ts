@@ -1,4 +1,4 @@
-/** API contract aligned with Back/src/Models/A-publicacion.model.js. */
+/** Persisted publication shape returned by the KEFEX API. */
 export interface Publicacion {
   _id: string;
   autor: string | { _id: string; name: string; email?: string; avatar?: string };
@@ -9,7 +9,7 @@ export interface Publicacion {
   updatedAt?: string;
 }
 
-/** Frontend projection used by feed and discovery cards; never persisted directly as a Mongoose document. */
+/** UI projection for publication cards. Keep required display fields normalized. */
 export interface PublicacionViewModel {
   id: string | number;
   titulo: string;
@@ -17,7 +17,12 @@ export interface PublicacionViewModel {
   imagenUrl: string;
   videoUrl?: string;
   categoria: string;
-  autor: { id: string | number; nombre: string; avatarUrl: string; username: string };
+  autor: {
+    id: string | number;
+    nombre: string;
+    avatarUrl: string;
+    username: string;
+  };
   likesCount: number;
   esFavorito?: boolean;
   favoriteId?: string;

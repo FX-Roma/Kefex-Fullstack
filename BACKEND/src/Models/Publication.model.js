@@ -30,6 +30,9 @@ const publicacionSchema = new mongoose.Schema(
     }
 );
 
-const Publicacion = mongoose.model("Publicacion", publicacionSchema);
+publicacionSchema.index({ createdAt: -1, _id: -1 });
+publicacionSchema.index({ categoria: 1, createdAt: -1 });
+
+const Publicacion = mongoose.models.Publicacion || mongoose.model("Publicacion", publicacionSchema);
 
 export default Publicacion;

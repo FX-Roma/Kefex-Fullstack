@@ -1,0 +1,25 @@
+<article class="publication-card">
+  <header class="card-header">
+    <div class="author">
+      <img [src]="publication().autor.avatarUrl || 'assets/Kefex-ph.png'" [alt]="'Avatar de ' + publication().autor.nombre" width="42" height="42" loading="lazy">
+      <div class="author-copy">
+        <strong>{{ publication().autor.nombre }}</strong>
+        <span>{{ publication().autor.username ? '@' + publication().autor.username : 'Comunidad KEFEX' }} · {{ publication().fechaCreacion | date:'mediumDate' }}</span>
+      </div>
+    </div>
+    <span class="category">{{ publication().categoria }}</span>
+  </header>
+  <div class="content">
+    <h3>{{ publication().titulo }}</h3>
+    <p>{{ publication().descripcion }}</p>
+  </div>
+  @if (publication().imagenUrl) {
+    <div class="media">
+      <img [src]="publication().imagenUrl" [alt]="'Imagen de ' + publication().titulo" loading="lazy" decoding="async">
+    </div>
+  }
+  <footer class="card-footer">
+    <span>♡ {{ publication().likesCount }} valoraciones</span>
+    <span class="trust-label">Experiencia compartida en KEFEX</span>
+  </footer>
+</article>
