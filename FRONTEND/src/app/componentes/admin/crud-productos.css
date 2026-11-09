@@ -1,0 +1,164 @@
+
+.crud-container {
+  padding: 25px;
+  color: #222;
+  background: #fff;
+  border-radius: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.encabezado h2 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.encabezado p {
+  color: #777;
+  margin-top: 7px;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+.btn-nuevo {
+  background: #171717;
+  color: white;
+}
+
+.formulario {
+  background: #f8f8f8;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 30px;
+}
+
+.formulario h3,
+.tabla-productos h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.formulario form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+}
+
+.formulario label {
+  font-weight: 600;
+  align-self: end;
+}
+
+.formulario input,
+.formulario select,
+.formulario textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px;
+  border: 1px solid #d4d4d4;
+  border-radius: 7px;
+  background: white;
+  font-size: 14px;
+}
+
+.formulario textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.botones-formulario {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.botones-formulario button {
+  background: #171717;
+  color: white;
+}
+
+.botones-formulario .btn-cancelar {
+  background: #777;
+}
+
+.tabla-productos {
+  margin-top: 25px;
+}
+
+.tabla-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tabla-productos table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 650px;
+}
+
+.tabla-productos th,
+.tabla-productos td {
+  padding: 14px;
+  border-bottom: 1px solid #e8e8e8;
+  text-align: left;
+}
+
+.tabla-productos th {
+  background: #f3f3f3;
+  font-weight: 700;
+}
+
+.btn-editar {
+  background: #e4e4e4;
+  color: #222;
+  margin-right: 7px;
+}
+
+.btn-eliminar {
+  background: #c62828;
+  color: white;
+}
+
+.mensaje-error {
+  background: #ffe9e9;
+  color: #b00020;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 650px) {
+  .crud-container {
+    padding: 14px;
+  }
+
+  .formulario form {
+    grid-template-columns: 1fr;
+  }
+
+  .encabezado {
+    align-items: flex-start;
+  }
+}

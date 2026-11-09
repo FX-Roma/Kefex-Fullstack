@@ -1,0 +1,159 @@
+
+<section class="crud-container">
+
+  <div class="encabezado">
+    <div>
+      <h2>Administración de productos</h2>
+      <p>Gestiona el catálogo de KEFEX.</p>
+    </div>
+
+    <button class="btn-nuevo" (click)="prepararCrear()">
+      + Nuevo producto
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="mensaje-error">
+      {{ error() }}
+    </div>
+  }
+
+  @if (mostrarFormulario()) {
+    <div class="formulario">
+      <h3>
+        {{ modo() === 'crear' ? 'Registrar producto' : 'Editar producto' }}
+      </h3>
+
+      <form (ngSubmit)="guardarProducto()">
+
+        <label>Nombre del producto</label>
+        <input
+          type="text"
+          name="nombre"
+          [(ngModel)]="productoForm.nombre"
+          required
+        />
+
+        <label>Descripción</label>
+        <textarea
+          name="descripcion"
+          [(ngModel)]="productoForm.descripcion"
+          required
+        ></textarea>
+
+        <label>Precio</label>
+        <input
+          type="number"
+          name="precio"
+          [(ngModel)]="productoForm.precio"
+          min="1"
+          required
+        />
+
+        <label>Categoría</label>
+        <select
+          name="categoria"
+          [(ngModel)]="productoForm.categoria"
+          required
+        >
+          <option value="">Seleccionar</option>
+          <option value="Tecnología">Tecnología</option>
+          <option value="Ropa">Ropa</option>
+          <option value="Belleza">Belleza</option>
+          <option value="Deporte">Deporte</option>
+          <option value="Videojuegos">Videojuegos</option>
+          <option value="Hogar">Hogar</option>
+          <option value="Música">Música</option>
+          <option value="Mascotas">Mascotas</option>
+        </select>
+
+        <label>Stock</label>
+        <input
+          type="number"
+          name="stock"
+          [(ngModel)]="productoForm.stock"
+          min="0"
+          required
+        />
+
+        <label>Valoración</label>
+        <input
+          type="number"
+          name="valoracion"
+          [(ngModel)]="productoForm.valoracion"
+          min="0"
+          max="5"
+          step="0.1"
+        />
+
+        <label>Imagen del producto</label>
+        <input
+          type="file"
+          accept="image/*"
+          (change)="seleccionarImagen($event)"
+        />
+
+        <div class="botones-formulario">
+          <button type="submit" [disabled]="cargando()">
+            {{ cargando() ? 'Guardando...' : 'Guardar producto' }}
+          </button>
+
+          <button type="button" class="btn-cancelar"
+            (click)="cancelarFormulario()">
+            Cancelar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  }
+
+  <div class="tabla-productos">
+    <h3>Productos registrados</h3>
+
+    @if (cargando()) {
+      <p>Cargando productos...</p>
+    } @else if (productos().length === 0) {
+      <p>No hay productos registrados.</p>
+    } @else {
+      <div class="tabla-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (producto of productos(); track producto._id) {
+              <tr>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.categoria }}</td>
+                <td>{{ producto.precio | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+                <td>{{ producto.stock }}</td>
+                <td>
+                  <button
+                    class="btn-editar"
+                    (click)="prepararEditar(producto)">
+                    Editar
+                  </button>
+
+                  <button
+                    class="btn-eliminar"
+                    (click)="eliminarProducto(producto)">
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+</section>
