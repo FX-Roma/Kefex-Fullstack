@@ -14,6 +14,26 @@ export class AuthService {
   login(credential: Credential): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/inicio-sesion`, credential);
   }
+forgotPassword(email: string): Observable<{ result: string; message: string }> {
+  return this.http.post<{ result: string; message: string }>(
+    `${this.apiUrl}/forgot-password`,
+    { email }
+  );
+
+}
+
+changePassword(passwordActual: string, passwordNueva: string): Observable<{ result: string; message: string }> {
+  return this.http.put<{ result: string; message: string }>(
+    `${this.apiUrl}/change-password`,
+    { passwordActual, passwordNueva },
+    {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`
+      }
+    }
+  );
+}
+
 
   register(payload: { name: string; email: string; password: string }): Observable<{ result: string; message: string }> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/registro`, payload);

@@ -10,9 +10,63 @@ interface ProfileApiUser { id: string; name: string; email: string; rol: 'user' 
 export class ProfileComponent {
   readonly authService = inject(AuthService); private readonly http = inject(HttpClient); private readonly router = inject(Router);
   readonly pestanaActiva = signal<'publicaciones'|'configuracion'>('publicaciones'); readonly apiProfile = signal<ProfileApiUser | null>(null); readonly profileError = signal(''); readonly profileNotice = signal(''); editName = ''; editBio = ''; saving = signal(false);
+
+passwordActual = '';
+passwordNueva = '';
+confirmarPassword = '';
+
+passwordError = signal('');
+passwordNotice = signal('');
+changingPassword = signal(false);
+
   readonly profileUser = computed(() => { const session = this.authService.currentUser(); if (!session) return null; const api = this.apiProfile(); return { ...session, name: api?.name || session.name || session.nombre || 'Usuario KEFEX', email: api?.email || session.email || '', rol: api?.rol || session.rol || 'user', avatarUrl: api?.avatar || session.avatarUrl || session.avatar || '', biografia: api?.biografia || session.biografia || '' }; });
   constructor() { this.http.get<{ user: ProfileApiUser }>(`${environment.apiUrl}/usuario/profile`).subscribe({ next: response => { this.apiProfile.set(response.user); this.editName = response.user.name; this.editBio = response.user.biografia || ''; }, error: () => this.profileError.set('No fue posible sincronizar los datos del perfil. Se muestra la información disponible en la sesión.') }); }
   cambiarPestana(tab: 'publicaciones'|'configuracion'): void { this.pestanaActiva.set(tab); }
   saveProfile(): void { this.profileError.set(''); this.profileNotice.set(''); const name = this.editName.trim(); const biografia = this.editBio.trim(); if (!name) { this.profileError.set('El nombre no puede estar vacío.'); return; } if (biografia.length > 280) { this.profileError.set('La biografía no puede superar 280 caracteres.'); return; } this.saving.set(true); this.http.put<{ user: ProfileApiUser; message: string }>(`${environment.apiUrl}/usuario/profile`, { name, biografia }).subscribe({ next: response => { this.apiProfile.set(response.user); this.authService.currentUser.update(current => current ? { ...current, name: response.user.name, nombre: response.user.name, biografia: response.user.biografia || '' } : current); this.profileNotice.set(response.message || 'Perfil actualizado.'); this.saving.set(false); }, error: err => { this.profileError.set(err.error?.error || 'No fue posible guardar el perfil.'); this.saving.set(false); } }); }
+
+cambiarPassword(): void {
+  this.passwordError.set('');
+  this.passwordNotice.set('');
+
+  if (!this.passwordActual || !this.passwordNueva || !this.confirmarPassword) {
+    this.passwordError.set('Debes completar todos los campos.');
+    return;
+  }
+
+  if (this.passwordNueva.length < 8) {
+    this.passwordError.set('La nueva contraseña debe tener al menos 8 caracteres.');
+    return;
+  }
+
+  if (this.passwordNueva !== this.confirmarPassword) {
+    this.passwordError.set('Las contraseñas nuevas no coinciden.');
+    return;
+  }
+
+  if (this.passwordActual === this.passwordNueva) {
+    this.passwordError.set('La nueva contraseña debe ser diferente a la actual.');
+    return;
+  }
+
+  this.changingPassword.set(true);
+
+  this.authService.changePassword(this.passwordActual, this.passwordNueva).subscribe({
+    next: (respuesta) => {
+      this.passwordNotice.set(respuesta.message || 'Contraseña actualizada correctamente.');
+      this.passwordActual = '';
+      this.passwordNueva = '';
+      this.confirmarPassword = '';
+      this.changingPassword.set(false);
+    },
+    error: (err) => {
+      this.passwordError.set(
+        err.error?.message || err.error?.error || 'No fue posible cambiar la contraseña.'
+      );
+      this.changingPassword.set(false);
+    }
+  });
+}
+
+
   logout(): void { this.authService.logout(); this.router.navigate(['/login']); }
 }

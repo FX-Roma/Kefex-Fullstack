@@ -1,1 +1,51 @@
-<p>recover works!</p>
+
+<!-- Contenedor principal -->
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card shadow p-4" style="max-width: 450px; width: 100%;">
+
+    <!-- Encabezado -->
+    <h2 class="text-center mb-3">Recuperar contraseña</h2>
+    <p class="text-muted text-center">
+      Ingresa tu correo electrónico para solicitar la recuperación de tu contraseña.
+    </p>
+
+    <!-- Formulario -->
+     <form (submit)="$event.preventDefault(); recuperarPassword()">
+      <!-- Correo electrónico -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          placeholder="ejemplo@correo.com"
+          [value]="email()"
+          (input)="email.set($any($event.target).value)"
+          required
+        >
+      </div>
+
+      <!-- Mensajes -->
+      @if (mensaje()) {
+        <div class="alert alert-success">{{ mensaje() }}</div>
+      }
+
+      @if (error()) {
+        <div class="alert alert-danger">{{ error() }}</div>
+      }
+
+      <!-- Botón -->
+      <button type="submit" class="btn btn-primary w-100" [disabled]="cargando()">
+        {{ cargando() ? 'Enviando...' : 'Recuperar contraseña' }}
+      </button>
+
+    </form>
+
+    <!-- Regresar al login -->
+    <div class="text-center mt-3">
+      <a href="/login">Volver a iniciar sesión</a>
+    </div>
+
+  </div>
+</div>
