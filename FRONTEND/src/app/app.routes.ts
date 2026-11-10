@@ -9,6 +9,7 @@ export const routes: Routes = [
   { path: 'foro', title: 'KEFEX — Comunidad', loadComponent: () => import('./pages/foro/foro').then(m => m.ForoComponent) },
   { path: 'login', title: 'KEFEX — Iniciar sesión', loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent) },
   { path: 'registro', title: 'KEFEX — Crear cuenta', loadComponent: () => import('./pages/registro/registro').then(m => m.RegistroComponent) },
+  { path: 'recuperar-contraseña', title: 'KEFEX — Recuperar contraseña', loadComponent: () => import('./componentes/recover/recover').then(m => m.Recover) },
   { path: 'perfil', title: 'KEFEX — Mi perfil', canActivate: [authGuard], loadComponent: () => import('./pages/profile/profile').then(m => m.ProfileComponent) },
   { path: 'profile', title: 'KEFEX — My profile', canActivate: [authGuard], loadComponent: () => import('./pages/profile/profile').then(m => m.ProfileComponent) },
   { path: 'admin', title: 'KEFEX — Administración', canActivate: [adminGuard], loadComponent: () => import('./pages/admin/admin').then(m => m.AdminComponent) },
