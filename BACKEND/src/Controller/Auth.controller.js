@@ -92,7 +92,7 @@ const loginForRole = (expectedRole) => async (req, res) => {
     const password = typeof req.body.password === 'string' ? req.body.password : '';
     if (!username || !password) return res.status(400).json({ result: 'mal', message: 'Correo y contraseña son obligatorios.' });
     const user = await Usuario.findOne({ email: username }).select('+password');
-    if (!user || (user.estado && user.estado !== 'activo') || !(await bcrypt.compare(password, user.password))) {
+    if (!user || (user.estado !== 'activo') || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ result: 'mal', message: 'Credenciales inválidas.' });
     }
     if (expectedRole && user.rol !== expectedRole) return res.status(403).json({ result: 'mal', message: 'Esta cuenta no puede acceder a este flujo.' });
