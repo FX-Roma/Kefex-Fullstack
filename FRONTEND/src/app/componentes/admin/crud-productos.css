@@ -1,71 +1,106 @@
 
+/* =========================================
+   CRUD PRODUCTOS - KEFEX
+   Diseño oscuro con detalles turquesa
+========================================= */
+
 .crud-container {
-  padding: 25px;
-  color: #222;
-  background: #fff;
-  border-radius: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 30px;
+  color: #f1f5f9;
+  background: #10141e;
+  border: 1px solid #252d3b;
+  border-radius: 16px;
   font-family: Arial, sans-serif;
 }
+
+/* ENCABEZADO */
 
 .encabezado {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 25px;
+  gap: 18px;
+  margin-bottom: 35px;
 }
 
 .encabezado h2 {
   margin: 0;
-  font-size: 25px;
+  color: #ffffff;
+  font-size: 27px;
   font-weight: 700;
 }
 
 .encabezado p {
-  color: #777;
-  margin-top: 7px;
+  color: #929daf;
+  margin: 9px 0 0;
+  font-size: 15px;
 }
 
-button {
+/* BOTONES GENERALES */
+
+.crud-container button {
   border: none;
-  border-radius: 8px;
-  padding: 11px 16px;
+  border-radius: 9px;
+  padding: 12px 18px;
   cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.25s ease;
 }
 
-button:hover {
-  opacity: 0.85;
+.crud-container button:hover {
+  transform: translateY(-2px);
 }
+
+.crud-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* BOTÓN NUEVO PRODUCTO */
 
 .btn-nuevo {
-  background: #171717;
-  color: white;
+  background: #00cfe8;
+  color: #07131a;
+  box-shadow: 0 4px 15px rgba(0, 207, 232, 0.15);
 }
 
+.btn-nuevo:hover {
+  background: #35e1f2;
+  box-shadow: 0 5px 20px rgba(0, 207, 232, 0.3);
+}
+
+/* FORMULARIO */
+
 .formulario {
-  background: #f8f8f8;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 22px;
-  margin-bottom: 30px;
+  background: #171e2b;
+  border: 1px solid #2b3545;
+  border-radius: 13px;
+  padding: 25px;
+  margin-bottom: 35px;
 }
 
 .formulario h3,
 .tabla-productos h3 {
+  color: #ffffff;
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
+  font-size: 20px;
 }
 
 .formulario form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px 18px;
+  gap: 12px 20px;
 }
 
 .formulario label {
+  color: #cbd5e1;
+  font-size: 14px;
   font-weight: 600;
   align-self: end;
 }
@@ -75,90 +110,218 @@ button:hover {
 .formulario textarea {
   width: 100%;
   box-sizing: border-box;
-  padding: 11px;
-  border: 1px solid #d4d4d4;
-  border-radius: 7px;
-  background: white;
+  padding: 12px;
+  color: #f1f5f9;
+  background: #0d1420;
+  border: 1px solid #354154;
+  border-radius: 8px;
   font-size: 14px;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.formulario input:focus,
+.formulario select:focus,
+.formulario textarea:focus {
+  border-color: #00cfe8;
+  box-shadow: 0 0 0 3px rgba(0, 207, 232, 0.1);
+}
+
+.formulario input::placeholder,
+.formulario textarea::placeholder {
+  color: #758195;
+}
+
+.formulario select option {
+  background: #171e2b;
+  color: #ffffff;
+}
+
+.formulario input[type="file"] {
+  color: #aab5c5;
+}
+
+.formulario input[type="file"]::file-selector-button {
+  background: #263347;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-right: 12px;
+  cursor: pointer;
 }
 
 .formulario textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 90px;
 }
+
+/* BOTONES DEL FORMULARIO */
 
 .botones-formulario {
   grid-column: 1 / -1;
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 15px;
 }
 
 .botones-formulario button {
-  background: #171717;
-  color: white;
+  background: #00cfe8;
+  color: #07131a;
+}
+
+.botones-formulario button:hover {
+  background: #35e1f2;
 }
 
 .botones-formulario .btn-cancelar {
-  background: #777;
+  background: #303b4d;
+  color: #ffffff;
 }
 
+.botones-formulario .btn-cancelar:hover {
+  background: #43516a;
+}
+
+/* TABLA DE PRODUCTOS */
+
 .tabla-productos {
-  margin-top: 25px;
+  margin-top: 30px;
 }
 
 .tabla-scroll {
   width: 100%;
   overflow-x: auto;
+  border: 1px solid #283244;
+  border-radius: 11px;
 }
 
 .tabla-productos table {
   width: 100%;
-  border-collapse: collapse;
   min-width: 650px;
+  border-collapse: collapse;
+  background: #141b28;
 }
 
 .tabla-productos th,
 .tabla-productos td {
-  padding: 14px;
-  border-bottom: 1px solid #e8e8e8;
+  padding: 17px 16px;
   text-align: left;
+  border-bottom: 1px solid #283244;
 }
 
 .tabla-productos th {
-  background: #f3f3f3;
+  background: #1c2636;
+  color: #00d5eb;
+  font-size: 14px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
+.tabla-productos td {
+  color: #d5dce7;
+  font-size: 14px;
+}
+
+.tabla-productos tbody tr {
+  transition: background 0.2s ease;
+}
+
+.tabla-productos tbody tr:hover {
+  background: #1d2939;
+}
+
+.tabla-productos tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* BOTÓN EDITAR */
+
 .btn-editar {
-  background: #e4e4e4;
-  color: #222;
+  background: #26384c;
+  color: #61dff0;
   margin-right: 7px;
 }
 
-.btn-eliminar {
-  background: #c62828;
-  color: white;
+.btn-editar:hover {
+  background: #34516c;
 }
+
+/* BOTÓN ELIMINAR */
+
+.btn-eliminar {
+  background: #a92c39;
+  color: #ffffff;
+}
+
+.btn-eliminar:hover {
+  background: #d93645;
+}
+
+/* MENSAJES */
 
 .mensaje-error {
-  background: #ffe9e9;
-  color: #b00020;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 15px;
+  background: rgba(220, 53, 69, 0.12);
+  color: #ff858e;
+  border: 1px solid rgba(220, 53, 69, 0.35);
+  padding: 14px;
+  border-radius: 9px;
+  margin-bottom: 20px;
 }
 
-@media (max-width: 650px) {
+.tabla-productos > p {
+  color: #aab5c5;
+  padding: 15px 0;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
   .crud-container {
-    padding: 14px;
+    padding: 20px;
+  }
+
+  .encabezado {
+    align-items: flex-start;
+  }
+
+  .encabezado h2 {
+    font-size: 22px;
   }
 
   .formulario form {
     grid-template-columns: 1fr;
   }
 
+  .botones-formulario {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .crud-container {
+    padding: 15px;
+    border-radius: 10px;
+  }
+
   .encabezado {
-    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .btn-nuevo {
+    width: 100%;
+  }
+
+  .formulario {
+    padding: 16px;
+  }
+
+  .botones-formulario {
+    flex-direction: column;
+  }
+
+  .botones-formulario button {
+    width: 100%;
   }
 }
