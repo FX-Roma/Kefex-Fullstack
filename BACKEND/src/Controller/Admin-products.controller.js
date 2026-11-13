@@ -4,6 +4,16 @@ import Producto from "../Models/Product.model.js";
 // CREATE: Crear nuevo producto
 export const crearProducto = async (req, res) => {
   try {
+<<<<<<< HEAD
+    const datos = { ...req.body };
+
+    // Guardar la ruta de la imagen recibida por Multer
+    if (req.file) {
+      datos.imagen = `/uploads/${req.file.filename}`;
+    }
+
+    const nuevoProducto = new Producto(datos);
+=======
     const {
       nombre,
       descripcion,
@@ -31,6 +41,7 @@ export const crearProducto = async (req, res) => {
       valoracion: Number(valoracion ?? 0)
     });
 
+>>>>>>> origin/main
     const productoGuardado = await nuevoProducto.save();
 
     res.status(201).json(productoGuardado);
@@ -82,14 +93,36 @@ export const obtenerProductoPorId = async (req, res) => {
 // UPDATE: Actualizar producto existente
 export const actualizarProducto = async (req, res) => {
   try {
+<<<<<<< HEAD
+    const datos = { ...req.body };
+
+    // Si se seleccionó una imagen nueva, actualizar su ruta
+    if (req.file) {
+      datos.imagen = `/uploads/${req.file.filename}`;
+    }
+
+    const productoActualizado = await Producto.findByIdAndUpdate(
+      req.params.id,
+      datos,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+    if (!productoActualizado) {
+=======
     const producto = await Producto.findById(req.params.id);
 
     if (!producto) {
+>>>>>>> origin/main
       return res.status(404).json({
         mensaje: "Producto no encontrado"
       });
     }
 
+<<<<<<< HEAD
+=======
     const {
       nombre,
       descripcion,
@@ -114,6 +147,7 @@ export const actualizarProducto = async (req, res) => {
 
     const productoActualizado = await producto.save();
 
+>>>>>>> origin/main
     res.status(200).json(productoActualizado);
 
   } catch (error) {
@@ -127,9 +161,17 @@ export const actualizarProducto = async (req, res) => {
 // DELETE: Eliminar producto
 export const eliminarProducto = async (req, res) => {
   try {
+<<<<<<< HEAD
+    const productoEliminado = await Producto.findByIdAndDelete(
+      req.params.id
+    );
+
+    if (!productoEliminado) {
+=======
     const producto = await Producto.findByIdAndDelete(req.params.id);
 
     if (!producto) {
+>>>>>>> origin/main
       return res.status(404).json({
         mensaje: "Producto no encontrado"
       });
@@ -138,7 +180,10 @@ export const eliminarProducto = async (req, res) => {
     res.status(200).json({
       mensaje: "Producto eliminado correctamente"
     });
+<<<<<<< HEAD
+=======
 
+>>>>>>> origin/main
   } catch (error) {
     res.status(500).json({
       mensaje: "Error al eliminar producto",

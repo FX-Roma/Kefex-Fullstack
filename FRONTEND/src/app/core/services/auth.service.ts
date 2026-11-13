@@ -83,6 +83,6 @@ changePassword(passwordActual: string, passwordNueva: string): Observable<{ resu
   private getInitialTokenState(): DecodedToken | null {
     const token = this.getToken();
     const decoded = token ? this.decodeToken(token) : null;
-    return decoded?.exp && decoded.exp * 1000 > Date.now() ? decoded : null;
+    return decoded?.exp && decoded.exp * 10000 > Date.now() ? decoded : null;
   }
 }

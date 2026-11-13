@@ -20,4 +20,18 @@ export class TiendaComponent {
   name(product: StoreProduct): string { return product.name || product.nombre || 'Producto KEFEX'; }
   description(product: StoreProduct): string { return product.description || product.descripcion || 'Descubre los detalles de este producto.'; }
   price(product: StoreProduct): number { return product.price ?? product.precio ?? 0; }
+
+  imageUrl(product: StoreProduct): string {
+  const imagen = product.imagen || product.image;
+
+  if (!imagen) return '';
+
+  if (/^https?:\/\//i.test(imagen)) {
+    return imagen;
+  }
+
+  const apiBase = environment.apiUrl.replace(/\/api\/?$/, '');
+
+  return `${apiBase}/${imagen.replace(/^\/+/, '')}`;
+}
 }

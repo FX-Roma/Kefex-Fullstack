@@ -4,6 +4,8 @@
    Diseño oscuro con detalles turquesa
 ========================================= */
 
+/* CONTENEDOR PRINCIPAL */
+
 .crud-container {
   width: 100%;
   box-sizing: border-box;
@@ -105,6 +107,8 @@
   align-self: end;
 }
 
+/* CAMPOS DEL FORMULARIO */
+
 .formulario input,
 .formulario select,
 .formulario textarea {
@@ -137,6 +141,8 @@
   color: #ffffff;
 }
 
+/* CAMPO PARA SUBIR IMÁGENES */
+
 .formulario input[type="file"] {
   color: #aab5c5;
 }
@@ -149,6 +155,10 @@
   padding: 8px 12px;
   margin-right: 12px;
   cursor: pointer;
+}
+
+.formulario input[type="file"]::file-selector-button:hover {
+  background: #35465f;
 }
 
 .formulario textarea {
@@ -259,7 +269,7 @@
   background: #d93645;
 }
 
-/* MENSAJES */
+/* MENSAJES DE ERROR */
 
 .mensaje-error {
   background: rgba(220, 53, 69, 0.12);
@@ -275,7 +285,7 @@
   padding: 15px 0;
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE - TABLET */
 
 @media (max-width: 768px) {
   .crud-container {
@@ -298,6 +308,8 @@
     grid-column: 1;
   }
 }
+
+/* RESPONSIVE - MÓVIL */
 
 @media (max-width: 480px) {
   .crud-container {
