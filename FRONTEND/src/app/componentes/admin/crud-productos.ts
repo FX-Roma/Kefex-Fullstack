@@ -73,10 +73,12 @@ export class CrudProductosComponent implements OnInit {
     this.mostrarFormulario.set(true);
   }
 
-  seleccionarImagen(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.archivoSeleccionado = input.files?.[0] ?? null;
-  }
+ seleccionarImagen(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  this.archivoSeleccionado = input.files?.[0] ?? null;
+
+  console.log('IMAGEN SELECCIONADA:', this.archivoSeleccionado);
+}
 
   guardarProducto(): void {
     if (!this.productoForm.nombre ||
