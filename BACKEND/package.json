@@ -4,11 +4,14 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "node --test",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
+    "test:unit": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --testPathPatterns=unit",
+    "test:integration": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --testPathPatterns=integration",
+    "test:coverage": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage --runInBand",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "check": "node scripts/check-project.mjs",
-    "test:contract": "node --test"
+    "test:contract": "node --test test/postman-collection.test.js"
   },
   "keywords": [],
   "author": "",
@@ -28,5 +31,9 @@
     "multer": "^2.4.0",
     "nodemailer": "^10.3.1",
     "nodemon": "^3.1.14"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
   }
 }

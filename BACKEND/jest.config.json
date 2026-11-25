@@ -1,0 +1,57 @@
+{
+  "testEnvironment": "node",
+  "testMatch": [
+    "<rootDir>/test/controllers/**/*.unit.test.js",
+    "<rootDir>/test/controllers/**/*.integration.test.js",
+    "<rootDir>/test/middleware/**/*.unit.test.js",
+    "<rootDir>/test/middleware/**/*.integration.test.js"
+  ],
+  "clearMocks": true,
+  "restoreMocks": true,
+  "collectCoverage": false,
+  "collectCoverageFrom": [
+    "src/Controller/**/*.js",
+    "src/middleware/**/*.js",
+    "!src/Controller/**/*.config.js"
+  ],
+  "coverageDirectory": "coverage",
+  "coverageReporters": [
+    "text",
+    "lcov",
+    "json-summary"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 8,
+      "functions": 15,
+      "lines": 15,
+      "statements": 15
+    },
+    "./src/Controller/Auth.controller.js": {
+      "branches": 35,
+      "functions": 55,
+      "lines": 50,
+      "statements": 50
+    },
+    "./src/Controller/User-publications.controller.js": {
+      "branches": 50,
+      "functions": 75,
+      "lines": 65,
+      "statements": 65
+    },
+    "./src/middleware/auth.middleware.js": {
+      "branches": 30,
+      "functions": 50,
+      "lines": 50,
+      "statements": 50
+    },
+    "./src/middleware/upload.middleware.js": {
+      "branches": 35,
+      "functions": 50,
+      "lines": 50,
+      "statements": 50
+    }
+  },
+  "transform": {},
+  "verbose": true
+}
